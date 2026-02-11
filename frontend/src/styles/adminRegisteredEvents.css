@@ -1,0 +1,34 @@
+.registered-events-page {
+  padding: 40px;
+}
+
+.registered-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.registered-event-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+ 
+.registered-event-card:hover {
+  transform: scale(1.05);
+}
+
+.registered-event-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.registered-event-card h4 {
+  text-align: center;
+  padding: 10px;
+  color: rgb(245, 243, 243);
+}

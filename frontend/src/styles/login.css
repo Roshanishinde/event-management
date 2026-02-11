@@ -1,0 +1,94 @@
+.login-page {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f4f4;
+}
+
+.login-box {
+  width: 750px;
+  height: 380px;
+  display: flex;
+  background: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+/* LEFT PANEL */
+.login-left {
+  width: 50%;
+  background-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80");
+  background-size: cover;
+  background-position: center;
+  color: rgb(230, 231, 236);
+  padding: 40px;
+}
+
+.login-left h2 {
+  margin-top: 80px;
+}
+ 
+.login-left p {
+  margin-top: 10px; 
+  font-size: 14px;
+}
+
+/* RIGHT PANEL */
+.login-right {
+  width: 50%;
+  padding: 40px;
+}
+
+.login-right h3 {
+  margin-bottom: 20px;
+  color: #8b0000;
+}
+
+.login-right input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;   /* 🔥 IMPORTANT */
+  border-radius: 5px;
+}
+
+.login-right button {
+  width: 100%;
+  padding: 12px;
+  background: #8b0000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* 🔥 PASSWORD + EYE ICON FIX */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding: 12px 42px 12px 12px; /* right side space for eye */
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-icon:hover {
+  color: darkred;
+}

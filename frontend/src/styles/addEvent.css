@@ -1,0 +1,65 @@
+.add-event-page {
+  padding: 40px 20px;
+  background: #f5f5f5;
+  min-height: 80vh;
+}
+
+/* PAGE TITLE */
+.add-event-page h2 {
+  text-align: center;
+  color: darkred;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+/* FORM CARD */
+.add-event-form {
+  max-width: 450px;
+  margin: auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+ 
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* INPUTS & TEXTAREA */
+.add-event-form input,
+.add-event-form textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+}
+
+.add-event-form textarea {
+  resize: none;
+  height: 90px;
+}
+
+/* FILE INPUT */
+.add-event-form input[type="file"] {
+  padding: 8px;
+}
+
+/* BUTTON */
+.add-event-form button {
+  margin-top: 10px;
+  background: darkred;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.add-event-form button:hover {
+  background: #a80000;
+}

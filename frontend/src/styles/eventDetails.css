@@ -1,0 +1,80 @@
+/* PAGE WRAPPER */
+.event-details-page {
+  padding: 40px 20px;
+  min-height: 80vh;
+  background: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MAIN CARD */
+.event-details-card {
+  max-width: 950px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  display: flex;
+  gap: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+} 
+
+/* IMAGE SECTION */
+.event-image-box {
+  flex: 1;
+  text-align: center;
+}
+
+.event-image-box img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* INFO SECTION */
+.event-info {
+  flex: 1;
+}
+
+.event-info h2 {
+  color: darkred;
+  margin-bottom: 15px;
+}
+
+.event-info p {
+  margin: 8px 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* BUTTONS */
+.enroll-btn,
+.login-btn {
+  margin-top: 18px;
+  padding: 10px 24px;
+  background: darkred;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.enroll-btn:hover,
+.login-btn:hover {
+  background: #a80000;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .event-details-card {
+    flex-direction: column;
+  }
+
+  .event-image-box img {
+    height: 220px;
+  }
+}

@@ -1,0 +1,20 @@
+.event-students-page {
+  padding: 40px;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-table th,
+.students-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.students-table th {
+  background: rgb(235, 5, 5);
+  color: white;
+} 

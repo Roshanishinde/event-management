@@ -1,0 +1,69 @@
+.my-reg-page {
+  padding: 25px;
+}
+
+.my-reg-page h2 {
+  color: #8b0000;
+  margin-bottom: 20px;
+}
+
+.no-reg {
+  background: #fff3f3;
+  padding: 15px;
+  border-left: 4px solid darkred;
+}
+
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.reg-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.reg-card:hover {
+  transform: translateY(-5px);
+}
+
+.reg-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.reg-content {
+  padding: 15px;
+}
+
+.reg-content h3 {
+  color: #8b0000;
+  margin-bottom: 8px;
+}
+
+.reg-content .desc {
+  font-size: 14px;
+  color: #555;
+  margin: 8px 0;
+}
+
+.reg-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.reg-footer span {
+  background: #d4edda;
+  color: #155724;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
