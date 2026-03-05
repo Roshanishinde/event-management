@@ -1,11 +1,10 @@
-/* ====== ADMIN PROFILE (PROFESSIONAL UI) ====== */
+/* ================= PROFILE COMPONENT STYLES ================= */
 
-.admin-profile-section {
-  padding: 28px 0;
+.profile-section {
+  padding: 30px 0;
   text-align: center;
 }
 
-/* Profile Image */
 .profile-pic-container {
   text-align: center;
   margin-bottom: 15px;
@@ -24,7 +23,7 @@
   height: 110px;
   border-radius: 50%;
   background: #8b0000;
-  color: white;
+  color: #fff;
   font-size: 42px;
   display: flex;
   align-items: center;
@@ -33,21 +32,19 @@
   font-weight: bold;
 }
 
-/* Heading */
-.admin-profile-section h2 {
+.profile-section h2 {
   font-size: 28px;
   color: #8b0000;
-  margin: 10px 0;
+  margin-bottom: 18px;
   font-weight: bold;
 }
 
-/* Info Card */
 .profile-card {
   background: white;
   max-width: 650px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px 28px;
+  padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 5px 18px rgba(0,0,0,0.1);
   box-sizing: border-box;
@@ -75,47 +72,51 @@
   color: #222;
 }
 
-/* Eye toggle */
 .password-row .profile-eye {
   margin-left: 8px;
   cursor: pointer;
   color: #8b0000;
 }
 
-/* Edit Profile Button */
+/* ========== Edit Button ========== */
 .edit-profile-btn {
   display: block;
-  margin: 16px auto 0 auto;
+  margin: 15px auto 0 auto;
   background: #8b0000;
   color: white;
-  padding: 10px 16px;
+  padding: 12px 18px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
+  transition: 0.3s ease;
 }
 
 .edit-profile-btn:hover {
   background: #a00000;
 }
 
-/* Edit Form Card */
+/* ================= EDIT PROFILE FORM ================= */
+
 .edit-profile-form {
-  max-width: 480px;
-  margin: 15px auto 32px auto;
+  max-width: 480px;  /* LIMITS WIDTH */
+  width: 100%;       /* MAKES INPUTS STRETCH */
+  margin: 20px auto;
   background: white;
-  padding: 22px 28px;
+  padding: 25px 30px;
   border-radius: 8px;
   box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+  box-sizing: border-box;
 }
 
-.edit-profile-form input {
+.edit-profile-form input,
+.edit-profile-form select {
   width: 100%;
   padding: 12px 14px;
-  margin-bottom: 14px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 6px;
   font-size: 15px;
+  border-radius: 6px;
   box-sizing: border-box;
 }
 
@@ -123,11 +124,16 @@
   width: 100%;
   background: #8b0000;
   color: white;
-  padding: 13px;
+  padding: 12px;
   border: none;
   border-radius: 6px;
-  font-size: 16px;
   cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+.edit-profile-form button:hover {
+  background: #a00000;
 }
 
 /* eye icon inside edit form password */

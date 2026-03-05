@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 const AddEvent = () => {
   const navigate = useNavigate();
- 
+
   const [eventName, setEventName] = useState("");
   const [eventType, setEventType] = useState("");
   const [date, setDate] = useState("");
@@ -40,7 +40,26 @@ const AddEvent = () => {
   venue,
   image
 }).then(() => navigate("/events"));
+    // Save the new event
+    const events = JSON.parse(localStorage.getItem("events")) || [];
+    events.push(newEvent);
+    localStorage.setItem("events", JSON.stringify(events));
 
+    // 🔔 CREATE GLOBAL NOTIFICATION FOR ALL STUDENTS
+    let savedNoti = JSON.parse(localStorage.getItem("notifications")) || [];
+
+    savedNoti.push({
+      id: Date.now(),
+      message: `📢 New event added: "${eventName}"`,
+      date: new Date().toISOString(),
+      read: false,
+      type: "global",   // global for everyone
+      user: "",         // no specific user
+    });
+
+    localStorage.setItem("notifications", JSON.stringify(savedNoti));
+
+    alert("🎉 Event Added Successfully!");
     navigate("/events");
   };
 
@@ -76,8 +95,6 @@ const AddEvent = () => {
           onChange={(e) => setVenue(e.target.value)}
         />
 
-       
-
         <input
           type="file"
           accept="image/*"
@@ -90,5 +107,5 @@ const AddEvent = () => {
     </div>
   );
 };
-  
+
 export default AddEvent;

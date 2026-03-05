@@ -1,77 +1,81 @@
-.admin-students-page {
-  padding: 40px;
+body {
+  margin: 0;
+  background-color: #f4f6f9;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Full page wrapper */
+.admin-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #f4f6f9;
+}
+
+/* White centered card */
+.admin-container {
+  width: 95%;
+  max-width: 1400px;
+  margin: auto;
   background: #ffffff;
-  min-height: 80vh;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 /* Heading */
-.admin-students-page h2 {
-  text-align: center;
-  color: darkred;
-  margin-bottom: 30px;
-  font-size: 26px;
-  font-weight: 600;
-}
-
-/* Table */
-.students-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-/* Header */
-.students-table th {
-  background: darkred;
-  color: #fff;
-  padding: 14px;
-  font-size: 15px;
-  text-transform: uppercase;
-  border-right: 1px solid rgba(255, 255, 255, 0.35); /* ✅ column line */
-}
-
-/* Cells */
-.students-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-  border-right: 1px solid #e0e0e0; /* ✅ column line */
-  text-align: center;
-  font-size: 14px;
+.admin-container h2 {
+  margin-bottom: 25px;
+  font-size: 24px;
   color: #333;
 }
 
-/* Remove right border from last column */
-.students-table th:last-child,
-.students-table td:last-child {
-  border-right: none;
+/* Make table responsive */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-/* Row hover */
-.students-table tr:hover {
-  background-color: #f5f5f5;
+/* Header styling */
+.admin-table thead {
+  background-color: #9b0a0a;
+  color: white;
 }
 
-/* Alternate rows */
-.students-table tr:nth-child(even) {
-  background: #fafafa;
+.admin-table th {
+  padding: 14px;
+  font-weight: 500;
+  text-align: center;
 }
 
-/* Delete Button */
+/* Table cells */
+.admin-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Zebra rows */
+.admin-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect */
+.admin-table tbody tr:hover {
+  background-color: #f1f5fb;
+}
+
+/* Delete button */
 .delete-btn {
-  background: crimson;
+  background-color: #e53935;
   color: white;
   border: none;
   padding: 6px 14px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
-  transition: 0.2s ease-in-out;
+  font-size: 14px;
+  transition: 0.2s ease;
 }
 
 .delete-btn:hover {
-  background: darkred;
-  transform: scale(1.05);
+  background-color: #c62828;
 }

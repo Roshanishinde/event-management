@@ -1,3 +1,4 @@
+/* Page background */
 .login-page {
   min-height: 90vh;
   display: flex;
@@ -6,12 +7,14 @@
   background: #f4f4f4;
 }
 
+/* Main login container */
 .login-box {
   width: 750px;
-  height: 380px;
   display: flex;
   background: white;
-  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 /* LEFT PANEL */
@@ -24,13 +27,16 @@
   padding: 40px;
 }
 
-.login-left h2 {
-  margin-top: 80px;
+.login-left h1 {
+  font-size: 28px;
+  margin-top: 60px;
+  color: #fff;
 }
- 
+
 .login-left p {
-  margin-top: 10px; 
+  margin-top: 10px;
   font-size: 14px;
+  color: #f8f8f8;
 }
 
 /* RIGHT PANEL */
@@ -42,17 +48,30 @@
 .login-right h3 {
   margin-bottom: 20px;
   color: #8b0000;
+  font-size: 24px;
+  text-align: center;
 }
 
-.login-right input {
+/* COMMON INPUT & SELECT */
+.login-right input,
+.login-right select {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  box-sizing: border-box;   /* 🔥 IMPORTANT */
+  box-sizing: border-box;
   border-radius: 5px;
+  font-size: 15px;
 }
 
+.login-right input:focus,
+.login-right select:focus {
+  outline: none;
+  border-color: #8b0000;
+  box-shadow: 0 0 4px rgba(139, 0, 0, 0.15);
+}
+
+/* LOGIN BUTTON */
 .login-right button {
   width: 100%;
   padding: 12px;
@@ -61,32 +80,36 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s ease;
 }
 
-/* 🔥 PASSWORD + EYE ICON FIX */
+.login-right button:hover {
+  background: #a00000;
+}
+
+/* PASSWORD WRAPPER */
 .password-wrapper {
   position: relative;
   width: 100%;
 }
 
 .password-wrapper input {
-  width: 100%;
-  padding: 12px 42px 12px 12px; /* right side space for eye */
-  margin-bottom: 15px;
-  box-sizing: border-box;
+  padding-right: 42px; /* space for eye icon */
 }
 
 .eye-icon {
   position: absolute;
-  top: 50%;
+  top: 0;
   right: 12px;
-  transform: translateY(-50%);
+  bottom: 0;
+  margin: auto 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
   cursor: pointer;
   color: #888;
   font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .eye-icon:hover {
