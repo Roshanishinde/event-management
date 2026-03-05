@@ -67,3 +67,55 @@
   font-size: 12px;
   font-weight: bold;
 }
+
+.myreg-page {
+  background-color: #f4f6f9;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.myreg-page h2 {
+  margin-bottom: 25px;
+}
+
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.reg-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.reg-card:hover {
+  transform: translateY(-5px);
+}
+
+.reg-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.reg-content {
+  padding: 15px;
+}
+
+.cancel-btn {
+  margin-top: 10px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #c62828;
+}

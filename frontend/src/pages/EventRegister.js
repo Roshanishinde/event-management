@@ -9,10 +9,7 @@ const EventRegister = () => {
   const events = JSON.parse(localStorage.getItem("events")) || [];
   const event = events[id];
 
-  const loggedUser =
-    localStorage.getItem("adminUsername") ||
-    localStorage.getItem("studentUsername") ||
-    "student";
+  const loggedUser = localStorage.getItem("studentUsername");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -33,9 +30,6 @@ const EventRegister = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ================================
-    // 1️⃣ OLD REGISTRATIONS (for admin view if needed)
-    // ================================
     let registrations =
       JSON.parse(localStorage.getItem("registrations")) || [];
 
@@ -46,42 +40,37 @@ const EventRegister = () => {
     );
 
     if (already) {
-      alert("Already registered for this event!");
+      alert("⚠ Already registered for this event!");
       return;
     }
 
-    registrations.push({
+    const newRegistration = {
+      user: loggedUser,
       eventId: Number(id),
       eventName: event.eventName,
       eventImage: event.image,
       ...formData,
-      registeredAt: new Date().toLocaleString()
-    });
+      registeredAt: new Date().toISOString(),
+    };
+
+    registrations.push(newRegistration);
 
     localStorage.setItem(
       "registrations",
       JSON.stringify(registrations)
     );
 
-    // ================================
-    // 2️⃣ MY REGISTRATIONS (USER DASHBOARD)
-    // ================================
-    let myRegistrations =
-      JSON.parse(localStorage.getItem("myRegistrations")) || [];
+    // ⭐ CREATE A NOTIFICATION FOR THIS REGISTRATION ⭐
+    let savedNoti = JSON.parse(localStorage.getItem("notifications")) || [];
 
-    myRegistrations.push({
-      user: loggedUser,
-      eventId: Number(id),
-      eventName: event.eventName,
-      eventImage: event.image,
-      ...formData,
-      registeredAt: new Date().toLocaleString()
+    savedNoti.push({
+      id: Date.now(),
+      message: `You registered for "${event.eventName}"`,
+      date: new Date().toISOString(),
+      read: false,
     });
 
-    localStorage.setItem(
-      "myRegistrations",
-      JSON.stringify(myRegistrations)
-    );
+    localStorage.setItem("notifications", JSON.stringify(savedNoti));
 
     alert("🎉 Registration Successful!");
     navigate("/student-dashboard");
@@ -104,34 +93,29 @@ const EventRegister = () => {
               required
               onChange={handleChange}
             />
-
             <input
               name="middleName"
               placeholder="Middle Name"
               onChange={handleChange}
             />
-
             <input
               name="lastName"
               placeholder="Last Name *"
               required
               onChange={handleChange}
             />
-
             <input
               name="className"
               placeholder="Class *"
               required
               onChange={handleChange}
             />
-
             <input
               name="division"
               placeholder="Division *"
               required
               onChange={handleChange}
             />
-
             <input
               name="contact"
               placeholder="Contact No *"
@@ -141,12 +125,10 @@ const EventRegister = () => {
               required
               onChange={handleChange}
             />
-
             <input
               name="email"
               type="email"
               placeholder="Email *"
-              className="full-width"
               required
               onChange={handleChange}
             />

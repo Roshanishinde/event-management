@@ -1,166 +1,136 @@
-import React, { useEffect, useState } from "react";
-import "../styles/adminMyAccount.css";
+import React, {  useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "../styles/adminMyAccount.css"; // new professional CSS
 
 const AdminMyAccount = () => {
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const storedUsername = localStorage.getItem("adminUsername") || "";
+  const storedEmail = localStorage.getItem("adminEmail") || "";
+  const storedPass = localStorage.getItem("adminPassword") || "";
+  const storedPic = localStorage.getItem("adminProfilePic") || "";
 
-  const [currentUsername, setCurrentUsername] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
+  const [username, setUsername] = useState(storedUsername);
+  const [email, setEmail] = useState(storedEmail);
+  const [password, setPassword] = useState(storedPass);
+  const [profilePic, setProfilePic] = useState(storedPic);
 
-  const [newUsername, setNewUsername] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const savedUsername = localStorage.getItem("adminUsername") || "admin";
-    const savedPassword = localStorage.getItem("adminPassword") || "admin123";
-
-    setCurrentUsername(savedUsername);
-    setCurrentPassword(savedPassword);
-  }, []);
-
-  const handleUpdate = () => {
-    if (!oldPassword) {
-      alert("❌ Old Password is required");
-      return;
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
+  };
 
-    if (oldPassword !== currentPassword) {
-      alert("❌ Old password is incorrect");
-      return;
-    }
+  const handleSave = () => {
+    localStorage.setItem("adminUsername", username);
+    localStorage.setItem("adminEmail", email);
+    localStorage.setItem("adminPassword", password);
+    localStorage.setItem("adminProfilePic", profilePic);
 
-    if (!newPassword || !confirmPassword) {
-      alert("❌ New Password and Confirm Password are required");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      alert("❌ New passwords do not match");
-      return;
-    }
-
-    if (!newUsername) {
-      alert("❌ New Username is required");
-      return;
-    }
-
-    localStorage.setItem("adminUsername", newUsername);
-    localStorage.setItem("adminPassword", newPassword);
-
-    setCurrentUsername(newUsername);
-    setCurrentPassword(newPassword);
-
-    setNewUsername("");
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-
-    alert("✅ Admin account updated successfully");
+    alert("✅ Admin Profile Updated Successfully!");
+    setIsEditing(false);
   };
 
   return (
-    <div className="admin-account-page">
-      <div className="admin-account-card">
+    <div className="admin-profile-section">
 
-        {/* HEADER */}
-        <div className="admin-header">
-          <h2>Admin Account Settings</h2>
-          <p>Manage your account and security</p>
-        </div>
-
-        {/* CURRENT DETAILS */}
-        <div className="admin-current-details">
-          <div className="account-row">
-            <span>Current Username</span>
-            <strong>{currentUsername}</strong>
+      {!isEditing && (
+        <>
+          {/* PROFILE PIC OR INITIAL */}
+          <div className="profile-pic-container">
+            {profilePic ? (
+              <img src={profilePic} className="profile-pic" alt="admin pic" />
+            ) : (
+              <div className="default-avatar">
+                {username.charAt(0).toUpperCase()}
+              </div>
+            )}
           </div>
 
-          <div className="account-row password-row">
-            <span>Current Password</span>
+          <h2>Admin Profile</h2>
 
-            <div className="password-eye-wrapper">
-              <span className="password-text">
-                {showCurrentPassword ? currentPassword : "••••••••"}
-              </span>
+          <div className="profile-card">
+            <div className="profile-row">
+              <span className="label">Username:</span>
+              <span className="value">{username}</span>
+            </div>
 
-              <i
-                className={`fa-solid ${showCurrentPassword ? "fa-eye-slash" : "fa-eye"}`}
-                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                title={showCurrentPassword ? "Hide Password" : "Show Password"}
-              ></i>
+            <div className="profile-row">
+              <span className="label">Email:</span>
+              <span className="value">{email}</span>
+            </div>
+
+           <div className="profile-row password-row">
+                         <span className="label">Password:</span>
+                         <span className="value">
+                           {showPass ? password : "••••••••"}
+                           <span className="profile-eye" onClick={() => setShowPass(!showPass)}>
+                             {showPass ? <FaEyeSlash /> : <FaEye />}
+                           </span>
+                         </span>
+                       </div>
+                       
+            <div className="profile-row">
+              <span className="label">Role:</span>
+              <span className="value">Admin</span>
             </div>
           </div>
-        </div>
 
-        <hr />
-
-        {/* UPDATE FORM */}
-        <div className="admin-update-form">
-          <h3>Update Account</h3>
-
-          <div className="password-input-wrapper">
-            <input
-              type="text"
-              placeholder="New Username *"
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="password-input-wrapper">
-            <input
-              type={showOldPassword ? "text" : "password"}
-              placeholder="Old Password *"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              required
-            />
-            <i
-              className={`fa-solid ${showOldPassword ? "fa-eye-slash" : "fa-eye"}`}
-              onClick={() => setShowOldPassword(!showOldPassword)}
-            ></i>
-          </div>
-
-          <div className="password-input-wrapper">
-            <input
-              type={showNewPassword ? "text" : "password"}
-              placeholder="New Password *"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-            <i
-              className={`fa-solid ${showNewPassword ? "fa-eye-slash" : "fa-eye"}`}
-              onClick={() => setShowNewPassword(!showNewPassword)}
-            ></i>
-          </div>
-
-          <div className="password-input-wrapper">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm New Password *"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <i
-              className={`fa-solid ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            ></i>
-          </div>
-
-          <button onClick={handleUpdate}>
-            Update Account
+          <button
+            className="edit-profile-btn"
+            onClick={() => setIsEditing(true)}
+          >
+            Edit Profile
           </button>
-        </div>
+        </>
+      )}
 
-      </div>
+      {isEditing && (
+        <div className="edit-profile-form">
+          <input type="file" onChange={handleImageChange} />
+
+          <input
+            type="text"
+            placeholder="New Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <input
+            type="email"
+            placeholder="New Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          {/* PASSWORD WITH EYE ICON */}
+            <div className="password-input-wrapper">
+              <input
+                type={showPass ? "text" : "password"}
+                placeholder="New Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <span
+                className="profile-eye-small"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+
+
+          <button onClick={handleSave}>Save Changes</button>
+        </div>
+      )}
+
     </div>
   );
 };
