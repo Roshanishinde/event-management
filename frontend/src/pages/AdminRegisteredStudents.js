@@ -7,73 +7,80 @@ const AdminRegisteredStudents = () => {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    const registrations =
+    const allRegs =
       JSON.parse(localStorage.getItem("registrations")) || [];
 
-    const filtered = registrations.filter(
+    const filtered = allRegs.filter(
       (r) => r.eventId === Number(eventId)
     );
 
     setStudents(filtered);
   }, [eventId]);
 
-  const handleDelete = (email) => {
+  const handleDelete = (email, eventId) => {
     if (!window.confirm("Delete this student?")) return;
 
-    const registrations =
+    let allRegs =
       JSON.parse(localStorage.getItem("registrations")) || [];
 
-    const updated = registrations.filter(
+    const updated = allRegs.filter(
       (r) =>
-        !(
-          r.eventId === Number(eventId) &&
-          r.email === email
-        )
+        !(r.email === email && r.eventId === eventId)
     );
 
     localStorage.setItem("registrations", JSON.stringify(updated));
-    setStudents((prev) => prev.filter((s) => s.email !== email));
+
+    setStudents(updated.filter((r) => r.eventId === Number(eventId)));
   };
 
-  if (students.length === 0) {
-    return <h2 style={{ padding: 40 }}>No students registered</h2>;
-  }
-
   return (
-    <div className="admin-students-page">
-      <h2>Registered Students</h2>
+    <div className="admin-page">
+      <div className="admin-container">
+       
 
-      <table className="students-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Div</th>
-            <th>Contact No</th>
-            <th>Email ID</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+        {students.length === 0 ? (
+          <p>No students registered yet.</p>
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+              
+                <th>Name</th>
+                <th>Class</th>
+                <th>Division</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-        <tbody>
-          {students.map((s, i) => (
-            <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{s.firstName} {s.middleName} {s.lastName}</td>
-              <td>{s.className}</td>
-              <td>{s.division}</td>
-              <td>{s.contact}</td>
-              <td>{s.email}</td>
-              <td>
-                <button className="delete-btn" onClick={() => handleDelete(s.email)}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            <tbody>
+              {students.map((s, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                 
+                  <td>{s.firstName} {s.middleName} {s.lastName}</td>
+                  <td>{s.className}</td>
+                  <td>{s.division}</td>
+                  <td>{s.contact}</td>
+                  <td>{s.email}</td>
+                  <td>
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDelete(s.email, s.eventId)
+                      }
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };
