@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/events.css";
-
+ import api from "../api/axios";
 const Events = () => {
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
-    setEvents(storedEvents);
-  }, []);
+
+useEffect(() => {
+  api.get("/events").then(res => setEvents(res.data));
+}, []);
 
   return (  
     <div className="events-page">

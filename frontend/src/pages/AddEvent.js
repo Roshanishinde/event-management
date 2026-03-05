@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/addEvent.css";
 import { useNavigate } from "react-router-dom";
-
+import api from "../api/axios";
 const AddEvent = () => {
   const navigate = useNavigate();
  
@@ -33,9 +33,13 @@ const AddEvent = () => {
       image,
     };
 
-    const events = JSON.parse(localStorage.getItem("events")) || [];
-    events.push(newEvent);
-    localStorage.setItem("events", JSON.stringify(events));
+    api.post("/events", {
+  eventName,
+  eventType,
+  date,
+  venue,
+  image
+}).then(() => navigate("/events"));
 
     navigate("/events");
   };

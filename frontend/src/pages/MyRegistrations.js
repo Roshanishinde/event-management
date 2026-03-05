@@ -4,13 +4,17 @@ import "./MyRegistrations.css";
 const MyRegistrations = () => {
   const [registrations, setRegistrations] = useState([]);
 
-  useEffect(() => {
-    const loggedUser = localStorage.getItem("adminUsername") || "student";
-    const allRegs = JSON.parse(localStorage.getItem("myRegistrations")) || [];
-
-    const userRegs = allRegs.filter(reg => reg.user === loggedUser);
-    setRegistrations(userRegs);
-  }, []);
+  useEffect(() => {api.post("/registrations", {
+  eventId,
+  eventName,
+  firstName,
+  middleName,
+  lastName,
+  className,
+  division,
+  contact,
+  email
+});}, []);
 
   return (
     <div className="my-reg-page">
