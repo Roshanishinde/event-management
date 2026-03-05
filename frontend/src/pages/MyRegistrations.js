@@ -4,7 +4,6 @@ import "../styles/MyRegistrations.css";
 const MyRegistrations = () => {
   const [registrations, setRegistrations] = useState([]);
 
-<<<<<<< HEAD
   useEffect(() => {api.post("/registrations", {
   eventId,
   eventName,
@@ -16,7 +15,6 @@ const MyRegistrations = () => {
   contact,
   email
 });}, []);
-=======
   useEffect(() => {
     const loggedUser = localStorage.getItem("studentUsername");
 
@@ -29,7 +27,6 @@ const MyRegistrations = () => {
 
     setRegistrations(myRegs);
   }, []);
->>>>>>> 9cc8bbb2eed43dbdac1e982c01ceea8ebf40e928
 
   const handleCancel = (email, eventId) => {
     if (!window.confirm("Cancel this registration?")) return;
