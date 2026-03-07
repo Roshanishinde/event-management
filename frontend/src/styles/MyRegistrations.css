@@ -1,121 +1,137 @@
-.my-reg-page {
-  padding: 25px;
+/* PAGE */
+.myreg-page{
+background:#f4f6f9;
+min-height:100vh;
+padding:35px;
 }
 
-.my-reg-page h2 {
-  color: #8b0000;
-  margin-bottom: 20px;
+.myreg-page h2{
+margin-bottom:25px;
+color:#8b0000;
+font-size:26px;
 }
 
-.no-reg {
-  background: #fff3f3;
-  padding: 15px;
-  border-left: 4px solid darkred;
+/* NO REGISTRATION MESSAGE */
+.no-reg{
+background:#fff3f3;
+padding:15px;
+border-left:4px solid darkred;
+border-radius:6px;
+color:#444;
 }
 
-.reg-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+/* GRID LAYOUT */
+.reg-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:22px;
 }
 
-.reg-card {
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: 0.3s;
+/* CARD */
+.reg-card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+transition:0.3s;
 }
 
-.reg-card:hover {
-  transform: translateY(-5px);
+.reg-card:hover{
+transform:translateY(-6px);
+box-shadow:0 10px 22px rgba(0,0,0,0.15);
 }
 
-.reg-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+/* EVENT IMAGE */
+.reg-image{
+width:100%;
+height:180px;
+object-fit:cover;
 }
 
-.reg-content {
-  padding: 15px;
+/* CARD CONTENT */
+.reg-content{
+padding:16px;
 }
 
-.reg-content h3 {
-  color: #8b0000;
-  margin-bottom: 8px;
+.reg-content h3{
+color:#8b0000;
+margin-bottom:10px;
+font-size:18px;
 }
 
-.reg-content .desc {
-  font-size: 14px;
-  color: #555;
-  margin: 8px 0;
+.reg-content p{
+font-size:14px;
+margin:4px 0;
+color:#444;
 }
 
-.reg-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+/* STATUS BADGE */
+.status{
+display:inline-block;
+padding:4px 10px;
+border-radius:6px;
+font-size:12px;
+font-weight:600;
+margin-left:6px;
 }
 
-.reg-footer span {
-  background: #d4edda;
-  color: #155724;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
+.status.pending{
+background:#fff3cd;
+color:#856404;
 }
 
-.myreg-page {
-  background-color: #f4f6f9;
-  min-height: 100vh;
-  padding: 40px;
+.status.approved{
+background:#d4edda;
+color:#155724;
 }
 
-.myreg-page h2 {
-  margin-bottom: 25px;
+.status.rejected{
+background:#f8d7da;
+color:#721c24;
 }
 
-.reg-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+/* PAYMENT SCREENSHOT */
+.payment-proof{
+margin-top:10px;
 }
 
-.reg-card {
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: 0.3s;
+.payment-img{
+width:120px;
+border-radius:6px;
+border:1px solid #ddd;
+margin-top:5px;
 }
 
-.reg-card:hover {
-  transform: translateY(-5px);
+/* CANCEL BUTTON */
+.cancel-btn{
+margin-top:12px;
+background:#e53935;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+font-size:13px;
+transition:0.25s;
 }
 
-.reg-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+.cancel-btn:hover{
+background:#c62828;
 }
 
-.reg-content {
-  padding: 15px;
+/* RESPONSIVE */
+@media(max-width:768px){
+
+.myreg-page{
+padding:20px;
 }
 
-.cancel-btn {
-  margin-top: 10px;
-  background-color: #e53935;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
+.reg-grid{
+grid-template-columns:1fr;
 }
 
-.cancel-btn:hover {
-  background-color: #c62828;
+.reg-image{
+height:160px;
+}
+
 }

@@ -3,12 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/eventDetails.css";
 
 const EventDetails = () => {
+
   const { id } = useParams();
   const navigate = useNavigate();
 
   const events = JSON.parse(localStorage.getItem("events")) || [];
   const event = events[id];
- 
+
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const role = localStorage.getItem("role");
 
@@ -27,17 +28,30 @@ const EventDetails = () => {
 
   return (
     <div className="event-details-container">
+
       <div className="event-details-card">
 
+        {/* Event Image */}
         <div className="event-image-box">
           <img src={event.image} alt={event.eventName} />
         </div>
 
+        {/* Event Info */}
         <div className="event-info">
+
           <h2>{event.eventName}</h2>
 
           <p><b>Type:</b> {event.eventType}</p>
+
+          {/* Show Amount if Paid */}
+          {event.eventType === "Paid" && (
+            <p><b>Amount:</b> ₹{event.amount}</p>
+          )}
+
           <p><b>Date:</b> {formatDate(event.date)}</p>
+
+          <p><b>Time:</b> {event.time}</p>
+
           <p><b>Venue:</b> {event.venue}</p>
 
           {/* 🔴 NOT LOGGED IN */}
@@ -50,7 +64,7 @@ const EventDetails = () => {
             </button>
           )}
 
-          {/* 🟢 STUDENT ONLY */}
+          {/* 🟢 STUDENT */}
           {isLoggedIn === "true" && role === "student" && (
             <button
               className="enroll-btn"
@@ -60,10 +74,10 @@ const EventDetails = () => {
             </button>
           )}
 
-          {/* ❌ ADMIN → NOTHING */}
-        </div> 
+        </div>
 
       </div>
+
     </div>
   );
 };

@@ -1,5 +1,7 @@
 .notifications-page {
   padding: 20px;
+  max-width: 800px;
+  margin: auto;
 }
 
 .noti-list {
@@ -8,48 +10,74 @@
   gap: 15px;
 }
 
+/* notification card */
 .noti-card {
   background: white;
-  padding: 14px 18px;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  border-left: 4px solid #8b0000;
+  padding: 16px 18px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border-left: 5px solid #8b0000;
+  transition: all 0.2s ease;
 }
 
+.noti-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+/* unread highlight */
 .noti-card.unread {
-  background: #fff7f7;
+  background: #fff3f3;
+  border-left: 5px solid #ff3b3b;
 }
 
+/* read notification */
 .noti-card.read {
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .noti-card p {
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 4px;
+  font-weight: 500;
 }
 
 .noti-card small {
-  color: #555;
-  font-size: 13px;
+  color: #666;
+  font-size: 12px;
 }
 
+/* buttons */
 .noti-actions {
-  margin-top: 6px;
+  margin-top: 8px;
   display: flex;
   gap: 10px;
 }
 
-.noti-actions button {
-  background: #8b0000;
+.mark-read-btn {
+  background: #0b7dda;
   color: white;
   border: none;
-  padding: 6px 10px;
+  padding: 5px 12px;
   border-radius: 4px;
   font-size: 12px;
   cursor: pointer;
 }
 
-.noti-actions button:hover {
+.mark-read-btn:hover {
+  background: #095ea8;
+}
+
+.delete-btn {
+  background: #8b0000;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
   background: #a00000;
 }
