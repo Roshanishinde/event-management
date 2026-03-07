@@ -20,30 +20,41 @@
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
- 
+
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* INPUTS & TEXTAREA */
+/* INPUTS */
 .add-event-form input,
+.add-event-form select,
 .add-event-form textarea {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 15px;
   outline: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* TEXTAREA */
 .add-event-form textarea {
   resize: none;
   height: 90px;
 }
 
+/* DROPDOWN STYLE */
+.add-event-form select {
+  background: white;
+  cursor: pointer;
+}
+
 /* FILE INPUT */
 .add-event-form input[type="file"] {
   padding: 8px;
+  border: none;
 }
 
 /* BUTTON */
@@ -60,6 +71,7 @@
   transition: background 0.3s ease;
 }
 
+/* BUTTON HOVER */
 .add-event-form button:hover {
   background: #a80000;
 }

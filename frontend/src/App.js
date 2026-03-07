@@ -22,6 +22,11 @@ import AdminRegisteredStudents from "./pages/AdminRegisteredStudents";
 import RegisteredUsers from "./pages/RegisteredUsers";
 import AdminMyAccount from "./pages/AdminMyAccount";
 
+import Contact from "./pages/Contact";
+import ContactMessages from "./pages/ContactMessages";
+
+
+
  
 
 
@@ -40,6 +45,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/event/:id" element={<EventDetails />} />
+        <Route path="/contact" element={<Contact />} />
+
 
         {/* ADMIN ROUTES */}
         <Route
@@ -74,7 +81,13 @@ function App() {
             )
           }
         />
-
+            <Route 
+            path="/admin/contact-messages" 
+            element={
+            <ContactMessages />
+            } 
+            
+            />
         {/* ✅ THIS WAS MISSING */}
         <Route
           path="/admin/edit-event/:index"
@@ -132,6 +145,7 @@ function App() {
          }
            />
       </Routes>
+  
     </Router>
   );
 }

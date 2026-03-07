@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import "../styles/addEvent.css";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+
 const AddEvent = () => {
+
   const navigate = useNavigate();
 
   const [eventName, setEventName] = useState("");
   const [eventType, setEventType] = useState("");
+  const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [venue, setVenue] = useState("");
   const [image, setImage] = useState("");
 
@@ -16,94 +20,131 @@ const AddEvent = () => {
     if (!file) return;
 
     const reader = new FileReader();
+
     reader.onloadend = () => {
-      setImage(reader.result); // base64 image
+      setImage(reader.result);
     };
+
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newEvent = {
       eventName,
       eventType,
+      amount,
       date,
+      time,
       venue,
       image,
+      createdAt: new Date().toISOString(),
     };
 
-    api.post("/events", {
-  eventName,
-  eventType,
-  date,
-  venue,
-  image
-}).then(() => navigate("/events"));
-    // Save the new event
-    const events = JSON.parse(localStorage.getItem("events")) || [];
-    events.push(newEvent);
-    localStorage.setItem("events", JSON.stringify(events));
+    try {
+      await api.post("/events", newEvent);
 
-    // 🔔 CREATE GLOBAL NOTIFICATION FOR ALL STUDENTS
-    let savedNoti = JSON.parse(localStorage.getItem("notifications")) || [];
+      let notifications =
+        JSON.parse(localStorage.getItem("notifications")) || [];
 
-    savedNoti.push({
-      id: Date.now(),
-      message: `📢 New event added: "${eventName}"`,
-      date: new Date().toISOString(),
-      read: false,
-      type: "global",   // global for everyone
-      user: "",         // no specific user
-    });
+      const newNotification = {
+        id: Date.now(),
+        title: "New Event Added",
+        message: `📢 New event added: "${eventName}"`,
+        eventName: eventName,
+        type: "global",
+        user: "",
+        read: false,
+        date: new Date().toISOString(),
+      };
 
-    localStorage.setItem("notifications", JSON.stringify(savedNoti));
+      notifications.push(newNotification);
 
-    alert("🎉 Event Added Successfully!");
-    navigate("/events");
+      localStorage.setItem(
+        "notifications",
+        JSON.stringify(notifications)
+      );
+
+      alert("🎉 Event Added Successfully!");
+
+      navigate("/events");
+
+    } catch (error) {
+      console.error("Error adding event:", error);
+      alert("Error adding event");
+    }
   };
 
   return (
     <div className="add-event-page">
+
       <h2>Add New Event</h2>
 
       <form className="add-event-form" onSubmit={handleSubmit}>
+
         <input
           type="text"
           placeholder="Event Name"
-          required
+          value={eventName}
           onChange={(e) => setEventName(e.target.value)}
+          required
         />
 
-        <input
-          type="text"
-          placeholder="Event Type (Party, Traditional, Tech)"
-          required
+        <select
+          className="event-select"
+          value={eventType}
           onChange={(e) => setEventType(e.target.value)}
-        />
+          required
+        >
+          <option value="">Select Event Type</option>
+          <option value="Free">Free</option>
+          <option value="Paid">Paid</option>
+        </select>
+
+        {eventType === "Paid" && (
+          <input
+            type="number"
+            placeholder="Enter Event Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
+        )}
 
         <input
           type="date"
-          required
+          value={date}
           onChange={(e) => setDate(e.target.value)}
+          required
+        />
+
+        <input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          required
         />
 
         <input
           type="text"
           placeholder="Venue"
-          required
+          value={venue}
           onChange={(e) => setVenue(e.target.value)}
+          required
         />
 
         <input
           type="file"
           accept="image/*"
-          required
           onChange={handleImageChange}
+          required
         />
 
         <button type="submit">Add Event</button>
+
       </form>
+
     </div>
   );
 };

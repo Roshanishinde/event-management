@@ -1,0 +1,80 @@
+.contact-messages-page {
+  padding: 30px;
+}
+
+.contact-messages-page h2 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.messages-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.messages-table th,
+.messages-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.messages-table th {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+.messages-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.messages-table tr:hover {
+  background-color: #f1f1f1;
+}
+.delete-btn {
+  padding: 5px 10px;
+  background: #ff4d4d;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+}
+
+.messages-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.messages-table th, .messages-table td {
+  border: 1px solid #edeeef;
+  padding: 10px;
+  text-align: left;
+}
+
+.messages-table th {
+  background-color: #3b81eb;
+}
+
+.delete-btn {
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #cc0000;
+}
