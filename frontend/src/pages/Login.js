@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../styles/login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // Ensure admin credentials exist in localStorage on first load
+  useEffect(() => {
+    const storedAdmin = JSON.parse(localStorage.getItem("adminCredentials"));
+    if (!storedAdmin) {
+      localStorage.setItem(
+        "adminCredentials",
+        JSON.stringify({
+          username: "khushi",
+          password: "khushi123",
+          email: "khushi@gmail.com"
+        })
+      );
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✔ form validation
     if (!username.trim() || !email.trim() || !password.trim() || !role) {
       alert("Please fill all fields!");
       return;
@@ -22,28 +36,38 @@ const Login = () => {
     if (role === "FY" || role === "SY" || role === "TY") {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("role", "student");
-
       localStorage.setItem("studentRoleType", role);
       localStorage.setItem("studentUsername", username);
-      localStorage.setItem("studentEmail", email);
       localStorage.setItem("studentPassword", password);
+      localStorage.setItem("studentEmail", email);
 
       alert(`✅ ${role} Login Successful`);
-      window.location.href = "/"; 
+      window.location.href = "/";
       return;
     }
 
     // ================= ADMIN LOGIN =================
     if (role === "Admin") {
-      // You can allow any admin credentials OR validate later
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("role", "admin");
-      localStorage.setItem("adminUsername", username);
-      localStorage.setItem("adminEmail", email);
-      localStorage.setItem("adminPassword", password);
+      const storedAdmin = JSON.parse(localStorage.getItem("adminCredentials"));
 
-      alert("✅ Admin Login Successful");
-      window.location.href = "/"; 
+      if (
+        storedAdmin &&
+        username === storedAdmin.username &&
+        password === storedAdmin.password &&
+        email === storedAdmin.email
+      ) {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("role", "admin");
+        // Save details for admin panel display
+        localStorage.setItem("adminUsername", storedAdmin.username);
+        localStorage.setItem("adminPassword", storedAdmin.password);
+        localStorage.setItem("adminEmail", storedAdmin.email);
+
+        alert("✅ Admin Login Successful");
+        window.location.href = "/"; // redirect to admin dashboard
+      } else {
+        alert("⚠ Invalid admin credentials");
+      }
       return;
     }
 
@@ -65,7 +89,6 @@ const Login = () => {
           <h3>Login</h3>
 
           <form onSubmit={handleSubmit}>
-
             {/* USERNAME */}
             <input
               type="text"
@@ -74,8 +97,7 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
             />
 
-            
-            {/* PASSWORD WITH EYE */}
+            {/* PASSWORD */}
             <div className="password-wrapper">
               <input
                 type={showPassword ? "text" : "password"}
@@ -83,11 +105,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-
-              <span
-                className="eye-icon"
-                onClick={() => setShowPassword(!showPassword)}
-              >
+              <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
@@ -100,8 +118,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-
-            {/* ROLE DROPDOWN */}
+            {/* ROLE */}
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -113,15 +130,13 @@ const Login = () => {
               <option value="Admin">Admin</option>
             </select>
 
-            {/* LOGIN BUTTON */}
             <button type="submit">Login</button>
-
           </form>
         </div>
-
       </div>
     </div>
   );
 };
 
 export default Login;
+ 

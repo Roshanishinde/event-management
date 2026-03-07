@@ -1,6 +1,6 @@
 .admin-events-page {
   padding: 40px;
-  background: #fff;
+  background: #f9f9f9;
   min-height: 80vh;
 }
 
@@ -8,63 +8,98 @@
   text-align: center;
   color: darkred;
   margin-bottom: 30px;
+  font-size: 28px;
 }
+
 
 /* TABLE */
 .admin-events-table {
   width: 100%;
   border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .admin-events-table th,
 .admin-events-table td {
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   padding: 12px;
-  text-align: center; 
+  text-align: center;
+  vertical-align: middle;
 }
 
 .admin-events-table th {
   background: darkred;
   color: white;
+  font-weight: 600;
 }
+
+/* ROW HOVER EFFECT */
+.admin-events-table tbody tr:hover {
+  background: #f5f5f5;
+}
+
 
 /* EVENT ICON */
 .event-icon {
   width: 60px;
   height: 45px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 6px;
 }
+
 
 /* ACTION BUTTONS */
 .action-buttons {
   display: flex;
-  gap: 10px;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
+
+/* EDIT BUTTON */
 .edit-btn {
-  background: #1976d2;
+  background: #2563eb;
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 14px;
   cursor: pointer;
-  border-radius: 4px;
-}
-
-.delete-btn {
-  background: #d32f2f;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.2s;
 }
 
 .edit-btn:hover {
-  background: #115293;
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+
+/* DELETE BUTTON */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.2s;
 }
 
 .delete-btn:hover {
-  background: #9a0007;
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+
+/* NO EVENTS TEXT */
+.no-events {
+  text-align: center;
+  color: gray;
+  font-size: 18px;
+  margin-top: 20px;
 }

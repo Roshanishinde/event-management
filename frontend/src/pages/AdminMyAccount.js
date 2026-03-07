@@ -1,16 +1,19 @@
-import React, {  useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "../styles/adminMyAccount.css"; // new professional CSS
+import "../styles/adminMyAccount.css";
 
 const AdminMyAccount = () => {
-  const storedUsername = localStorage.getItem("adminUsername") || "";
-  const storedEmail = localStorage.getItem("adminEmail") || "";
-  const storedPass = localStorage.getItem("adminPassword") || "";
+  // Fetch existing credentials from localStorage (or fallback to defaults)
+  const storedAdmin = JSON.parse(localStorage.getItem("adminCredentials")) || {
+    username: "khushi",
+    email: "khushi@gmail.com",
+    password: "khushi123"
+  };
   const storedPic = localStorage.getItem("adminProfilePic") || "";
 
-  const [username, setUsername] = useState(storedUsername);
-  const [email, setEmail] = useState(storedEmail);
-  const [password, setPassword] = useState(storedPass);
+  const [username, setUsername] = useState(storedAdmin.username);
+  const [email, setEmail] = useState(storedAdmin.email);
+  const [password, setPassword] = useState(storedAdmin.password);
   const [profilePic, setProfilePic] = useState(storedPic);
 
   const [showPass, setShowPass] = useState(false);
@@ -28,6 +31,15 @@ const AdminMyAccount = () => {
   };
 
   const handleSave = () => {
+    // ✅ Save updated credentials so that login only works with these
+    const updatedAdmin = {
+      username,
+      email,
+      password
+    };
+    localStorage.setItem("adminCredentials", JSON.stringify(updatedAdmin));
+
+    // Save separate keys for admin panel display
     localStorage.setItem("adminUsername", username);
     localStorage.setItem("adminEmail", email);
     localStorage.setItem("adminPassword", password);
@@ -42,7 +54,6 @@ const AdminMyAccount = () => {
 
       {!isEditing && (
         <>
-          {/* PROFILE PIC OR INITIAL */}
           <div className="profile-pic-container">
             {profilePic ? (
               <img src={profilePic} className="profile-pic" alt="admin pic" />
@@ -66,16 +77,16 @@ const AdminMyAccount = () => {
               <span className="value">{email}</span>
             </div>
 
-           <div className="profile-row password-row">
-                         <span className="label">Password:</span>
-                         <span className="value">
-                           {showPass ? password : "••••••••"}
-                           <span className="profile-eye" onClick={() => setShowPass(!showPass)}>
-                             {showPass ? <FaEyeSlash /> : <FaEye />}
-                           </span>
-                         </span>
-                       </div>
-                       
+            <div className="profile-row password-row">
+              <span className="label">Password:</span>
+              <span className="value">
+                {showPass ? password : "••••••••"}
+                <span className="profile-eye" onClick={() => setShowPass(!showPass)}>
+                  {showPass ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </span>
+            </div>
+
             <div className="profile-row">
               <span className="label">Role:</span>
               <span className="value">Admin</span>
@@ -109,23 +120,20 @@ const AdminMyAccount = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          {/* PASSWORD WITH EYE ICON */}
-            <div className="password-input-wrapper">
-              <input
-                type={showPass ? "text" : "password"}
-                placeholder="New Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-
-              <span
-                className="profile-eye-small"
-                onClick={() => setShowPass(!showPass)}
-              >
-                {showPass ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
-
+          <div className="password-input-wrapper">
+            <input
+              type={showPass ? "text" : "password"}
+              placeholder="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span
+              className="profile-eye-small"
+              onClick={() => setShowPass(!showPass)}
+            >
+              {showPass ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
           <button onClick={handleSave}>Save Changes</button>
         </div>

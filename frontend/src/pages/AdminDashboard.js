@@ -59,6 +59,15 @@ const AdminDashboard = () => {
           <h3>My Account</h3>
           <p>View admin profile details</p>
         </div>
+
+        {/* CONTACT MESSAGES */}
+          <div
+           className="dashboard-card"
+             onClick={() => navigate("/admin/contact-messages")}
+          >
+            <h3>Contact Messages</h3>
+             <p>View all messages sent via contact form</p>
+             </div>
         
 
        

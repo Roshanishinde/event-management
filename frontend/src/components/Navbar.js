@@ -16,8 +16,8 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-   localStorage.removeItem("isLoggedIn");
-   localStorage.removeItem("role");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("role");
     navigate("/");
   };
 
@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="menu-bar">
         <ul>
           <li><Link to="/">HOME</Link></li>
-         <li><Link to="/about">ABOUT US</Link></li>
+          <li><Link to="/about">ABOUT US</Link></li>
           <li><Link to="/events">EVENTS</Link></li>
 
           {/* SINGLE DASHBOARD */}
@@ -40,12 +40,9 @@ const Navbar = () => {
             </li>
           )}
 
-          {/* SHOW ONLY WHEN NOT LOGGED IN */}
+          {/* LOGIN */}
           {!isLoggedIn && (
-            <> 
-              
-              <li><Link to="/login">LOGIN</Link></li>
-            </>
+            <li><Link to="/login">LOGIN</Link></li>
           )}
 
           {/* LOGOUT */}
@@ -55,8 +52,11 @@ const Navbar = () => {
             </li>
           )}
 
-          <li><Link to="/contact">CONTACT US</Link></li>
-          
+          {/* CONTACT US - ONLY FOR LOGGED-IN STUDENTS */}
+          {isLoggedIn && role === "student" && (
+            <li><Link to="/contact">CONTACT US</Link></li>
+          )}
+
         </ul>
       </div>
     </div>

@@ -3,24 +3,28 @@ import { useNavigate } from "react-router-dom";
 import "../styles/adminAllEvents.css";
 
 const AdminRegisteredEvents = () => {
+
   const navigate = useNavigate();
 
   const events = JSON.parse(localStorage.getItem("events")) || [];
   const registrations =
     JSON.parse(localStorage.getItem("registrations")) || [];
 
-  // count students per event
-  const getCount = (eventId) =>
-    registrations.filter((r) => r.eventId === eventId).length;
+  const getCount = (eventId) => {
+    return registrations.filter((r) => r.eventId === eventId).length;
+  };
 
   return (
     <div className="admin-events-page">
-      <h2>Registered Events</h2>
 
-      {events.length === 0 && <p>No events added yet</p>}
+      
+
+      {events.length === 0 && <p>No events available</p>}
 
       <div className="events-grid">
+
         {events.map((event, index) => (
+
           <div
             key={index}
             className="event-card"
@@ -28,15 +32,24 @@ const AdminRegisteredEvents = () => {
               navigate(`/admin/registered-students/${index}`)
             }
           >
-            <img src={event.image} alt={event.eventName} />
-            <h3>{event.eventName}</h3>
 
-            <p style={{ fontWeight: "bold", color: "green" }}>
-              Students: {getCount(index)}
-            </p>
+            {/* EVENT IMAGE COVER */}
+            <div className="event-image">
+              <img src={event.image} alt={event.eventName} />
+            </div>
+
+            {/* Overlay info */}
+            <div className="event-overlay">
+              <h3>{event.eventName}</h3>
+              <p>Students: {getCount(index)}</p>
+            </div>
+
           </div>
+
         ))}
+
       </div>
+
     </div>
   );
 };

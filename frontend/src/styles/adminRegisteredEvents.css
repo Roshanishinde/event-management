@@ -1,34 +1,65 @@
 .registered-events-page {
   padding: 40px;
+  background: #f4f6f9;
+  min-height: 100vh;
 }
 
+.registered-events-page h2 {
+  margin-bottom: 25px;
+}
+
+/* GRID */
 .registered-events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
 }
 
+/* CARD */
 .registered-event-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  cursor: pointer;
+  position: relative;
+  height: 200px;
+  border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.3s;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
 }
- 
+
 .registered-event-card:hover {
   transform: scale(1.05);
 }
 
+/* IMAGE COVER */
 .registered-event-card img {
   width: 100%;
-  height: 150px;
+  height: 100%;
   object-fit: cover;
 }
 
+/* OVERLAY TEXT */
 .registered-event-card h4 {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  font-size: 16px;
   text-align: center;
-  padding: 10px;
-  color: rgb(245, 243, 243);
+  color: #fff;
+
+  /* gradient overlay for readability */
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+/* STUDENT COUNT */
+.registered-event-card p {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 5px;
 }

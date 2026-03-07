@@ -4,36 +4,60 @@ import '../styles/dashboard.css';
 const EventCard = ({ event, isRegistered, onRegister }) => {
   return (
     <div className="event-card">
-      <div className="event-date-badge">
-        <span className="month">{event.date.split(' ')[0]}</span>
-        <span className="day">{event.date.split(' ')[1].replace(',', '')}</span>
-      </div>
+
+      {/* Event Image */}
+      <img 
+        src={event.image} 
+        alt={event.eventName} 
+        className="event-image"
+      />
 
       <div className="event-content">
-        <h3 className="event-title">{event.title}</h3>
 
-        <div className="event-details">
-          <div className="detail-item">
-            <span className="icon">🕒</span>
-            <span>{event.time}</span>
-          </div>
-          <div className="detail-item">
-            <span className="icon">📍</span>
-            <span>{event.venue}</span>
-          </div>
+        {/* Event Title */}
+        <h3 className="event-title">{event.eventName}</h3>
+
+        {/* Event Type */}
+        <p className="event-type">
+          Type: {event.eventType}
+        </p>
+
+        {/* Amount if Paid */}
+        {event.eventType === "Paid" && (
+          <p className="event-amount">
+            Amount: ₹{event.amount}
+          </p>
+        )}
+
+        {/* Date */}
+        <div className="detail-item">
+          <span className="icon">📅</span>
+          <span>{event.date}</span>
         </div>
 
-        <p className="event-description">{event.description}</p>
+        {/* Time */}
+        <div className="detail-item">
+          <span className="icon">🕒</span>
+          <span>{event.time}</span>
+        </div>
 
+        {/* Venue */}
+        <div className="detail-item">
+          <span className="icon">📍</span>
+          <span>{event.venue}</span>
+        </div>
+
+        {/* Register Button */}
         <button
           className="register-btn"
           onClick={() => onRegister(event)}
           disabled={isRegistered}
-          style={isRegistered ? { backgroundColor: '#e0e0e0', color: '#666', border: 'none', cursor: 'default' } : {}}
         >
           {isRegistered ? 'Registered' : 'Register Now'}
         </button>
+
       </div>
+
     </div>
   );
 };

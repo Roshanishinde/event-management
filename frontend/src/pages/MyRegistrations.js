@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "../styles/MyRegistrations.css";
 
 const MyRegistrations = () => {
+
   const [registrations, setRegistrations] = useState([]);
 
   useEffect(() => {
+
     const loggedUser = localStorage.getItem("studentUsername");
 
     const allRegs =
@@ -15,9 +17,13 @@ const MyRegistrations = () => {
     );
 
     setRegistrations(myRegs);
+
   }, []);
 
+
+
   const handleCancel = (email, eventId) => {
+
     if (!window.confirm("Cancel this registration?")) return;
 
     let allRegs =
@@ -38,18 +44,28 @@ const MyRegistrations = () => {
     );
 
     alert("Registration Cancelled");
+
   };
+
+
 
   return (
     <div className="myreg-page">
 
+     
+
       {registrations.length === 0 ? (
-        <p>No registrations found.</p>
+
+        <p className="no-reg">No registrations found.</p>
+
       ) : (
+
         <div className="reg-grid">
+
           {registrations.map((event, index) => (
+
             <div className="reg-card" key={index}>
-              
+
               {/* Event Image */}
               <img
                 src={event.eventImage}
@@ -58,7 +74,16 @@ const MyRegistrations = () => {
               />
 
               <div className="reg-content">
+
                 <h3>{event.eventName}</h3>
+
+                {/* STATUS BADGE */}
+                <p>
+                  <strong>Status:</strong>{" "}
+                  <span className={`status ${event.status?.toLowerCase() || "pending"}`}>
+                    {event.status || "Pending"}
+                  </span>
+                </p>
 
                 <p>
                   <strong>Full Name:</strong>{" "}
@@ -78,6 +103,18 @@ const MyRegistrations = () => {
                     : "N/A"}
                 </p>
 
+                {/* PAYMENT SCREENSHOT */}
+                {event.paymentProof && (
+                  <div className="payment-proof">
+                    <p><strong>Payment Screenshot:</strong></p>
+                    <img
+                      src={event.paymentProof}
+                      alt="Payment Proof"
+                      className="payment-img"
+                    />
+                  </div>
+                )}
+
                 <button
                   className="cancel-btn"
                   onClick={() =>
@@ -86,11 +123,17 @@ const MyRegistrations = () => {
                 >
                   Cancel Registration
                 </button>
+
               </div>
+
             </div>
+
           ))}
+
         </div>
+
       )}
+
     </div>
   );
 };
