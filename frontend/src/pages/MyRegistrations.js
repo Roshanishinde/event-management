@@ -1,29 +1,17 @@
+// 
 import React, { useEffect, useState } from "react";
 import "../styles/MyRegistrations.css";
 
 const MyRegistrations = () => {
   const [registrations, setRegistrations] = useState([]);
 
-  useEffect(() => {api.post("/registrations", {
-  eventId,
-  eventName,
-  firstName,
-  middleName,
-  lastName,
-  className,
-  division,
-  contact,
-  email
-});}, []);
   useEffect(() => {
     const loggedUser = localStorage.getItem("studentUsername");
 
     const allRegs =
       JSON.parse(localStorage.getItem("registrations")) || [];
 
-    const myRegs = allRegs.filter(
-      (r) => r.user === loggedUser
-    );
+    const myRegs = allRegs.filter((r) => r.user === loggedUser);
 
     setRegistrations(myRegs);
   }, []);
@@ -35,16 +23,14 @@ const MyRegistrations = () => {
       JSON.parse(localStorage.getItem("registrations")) || [];
 
     const updated = allRegs.filter(
-      (r) =>
-        !(r.email === email && r.eventId === eventId)
+      (r) => !(r.email === email && r.eventId === eventId)
     );
 
     localStorage.setItem("registrations", JSON.stringify(updated));
 
     setRegistrations((prev) =>
       prev.filter(
-        (r) =>
-          !(r.email === email && r.eventId === eventId)
+        (r) => !(r.email === email && r.eventId === eventId)
       )
     );
 
@@ -53,15 +39,12 @@ const MyRegistrations = () => {
 
   return (
     <div className="myreg-page">
-
       {registrations.length === 0 ? (
         <p>No registrations found.</p>
       ) : (
         <div className="reg-grid">
           {registrations.map((event, index) => (
             <div className="reg-card" key={index}>
-              
-              {/* Event Image */}
               <img
                 src={event.eventImage}
                 alt={event.eventName}
@@ -84,8 +67,7 @@ const MyRegistrations = () => {
                 <p>
                   <strong>Registered On:</strong>{" "}
                   {event.registeredAt
-                    ? new Date(event.registeredAt)
-                        .toLocaleDateString("en-IN")
+                    ? new Date(event.registeredAt).toLocaleDateString("en-IN")
                     : "N/A"}
                 </p>
 
