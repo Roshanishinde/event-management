@@ -12,9 +12,7 @@ const MyRegistrations = () => {
     const allRegs =
       JSON.parse(localStorage.getItem("registrations")) || [];
 
-    const myRegs = allRegs.filter(
-      (r) => r.user === loggedUser
-    );
+    const myRegs = allRegs.filter((r) => r.user === loggedUser);
 
     setRegistrations(myRegs);
 
@@ -30,16 +28,14 @@ const MyRegistrations = () => {
       JSON.parse(localStorage.getItem("registrations")) || [];
 
     const updated = allRegs.filter(
-      (r) =>
-        !(r.email === email && r.eventId === eventId)
+      (r) => !(r.email === email && r.eventId === eventId)
     );
 
     localStorage.setItem("registrations", JSON.stringify(updated));
 
     setRegistrations((prev) =>
       prev.filter(
-        (r) =>
-          !(r.email === email && r.eventId === eventId)
+        (r) => !(r.email === email && r.eventId === eventId)
       )
     );
 
@@ -64,6 +60,8 @@ const MyRegistrations = () => {
 
             <div className="reg-card" key={index}>
 
+              
+              {/* Event Image */}
               <img
                 src={event.eventImage}
                 alt={event.eventName}

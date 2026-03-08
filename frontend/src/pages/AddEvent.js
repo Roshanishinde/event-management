@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/addEvent.css";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 const AddEvent = () => {
 
@@ -8,7 +9,7 @@ const AddEvent = () => {
 
   const [eventName, setEventName] = useState("");
   const [eventType, setEventType] = useState("");
-  const [amount, setAmount] = useState("");   // NEW
+  const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [venue, setVenue] = useState("");
@@ -27,14 +28,13 @@ const AddEvent = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
-
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newEvent = {
       eventName,
       eventType,
-      amount,   // NEW
+      amount,
       date,
       time,
       venue,
@@ -42,34 +42,38 @@ const AddEvent = () => {
       createdAt: new Date().toISOString(),
     };
 
-    const events = JSON.parse(localStorage.getItem("events")) || [];
-    events.push(newEvent);
-    localStorage.setItem("events", JSON.stringify(events));
+    try {
+      await api.post("/events", newEvent);
 
-    let notifications =
-      JSON.parse(localStorage.getItem("notifications")) || [];
+      let notifications =
+        JSON.parse(localStorage.getItem("notifications")) || [];
 
-    const newNotification = {
-      id: Date.now(),
-      title: "New Event Added",
-      message: `📢 New event added: "${eventName}"`,
-      eventName: eventName,
-      type: "global",
-      user: "",
-      read: false,
-      date: new Date().toISOString(),
-    };
+      const newNotification = {
+        id: Date.now(),
+        title: "New Event Added",
+        message: `📢 New event added: "${eventName}"`,
+        eventName: eventName,
+        type: "global",
+        user: "",
+        read: false,
+        date: new Date().toISOString(),
+      };
 
-    notifications.push(newNotification);
+      notifications.push(newNotification);
 
-    localStorage.setItem(
-      "notifications",
-      JSON.stringify(notifications)
-    );
+      localStorage.setItem(
+        "notifications",
+        JSON.stringify(notifications)
+      );
 
-    alert("🎉 Event Added Successfully!");
+      alert("🎉 Event Added Successfully!");
 
-    navigate("/events");
+      navigate("/events");
+
+    } catch (error) {
+      console.error("Error adding event:", error);
+      alert("Error adding event");
+    }
   };
 
   return (
@@ -79,7 +83,6 @@ const AddEvent = () => {
 
       <form className="add-event-form" onSubmit={handleSubmit}>
 
-        {/* Event Name */}
         <input
           type="text"
           placeholder="Event Name"
@@ -88,7 +91,6 @@ const AddEvent = () => {
           required
         />
 
-        {/* Event Type */}
         <select
           className="event-select"
           value={eventType}
@@ -100,7 +102,6 @@ const AddEvent = () => {
           <option value="Paid">Paid</option>
         </select>
 
-        {/* SHOW ONLY IF PAID */}
         {eventType === "Paid" && (
           <input
             type="number"
@@ -111,7 +112,6 @@ const AddEvent = () => {
           />
         )}
 
-        {/* Date */}
         <input
           type="date"
           value={date}
@@ -119,7 +119,6 @@ const AddEvent = () => {
           required
         />
 
-        {/* Time */}
         <input
           type="time"
           value={time}
@@ -127,7 +126,6 @@ const AddEvent = () => {
           required
         />
 
-        {/* Venue */}
         <input
           type="text"
           placeholder="Venue"
@@ -136,7 +134,6 @@ const AddEvent = () => {
           required
         />
 
-        {/* Image Upload */}
         <input
           type="file"
           accept="image/*"
