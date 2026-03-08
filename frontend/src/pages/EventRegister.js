@@ -30,8 +30,6 @@ const EventRegister = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
-  // PAYMENT SCREENSHOT UPLOAD
   const handlePaymentUpload = (e) => {
 
     const file = e.target.files[0];
@@ -46,12 +44,10 @@ const EventRegister = () => {
     reader.readAsDataURL(file);
   };
 
-
   const handleSubmit = (e) => {
 
     e.preventDefault();
 
-    // PAID EVENT VALIDATION
     if (event.eventType === "Paid" && !paymentScreenshot) {
       alert("⚠ Please upload payment screenshot");
       return;
@@ -73,11 +69,18 @@ const EventRegister = () => {
 
     const newRegistration = {
       user: loggedUser,
+
       eventId: Number(id),
       eventName: event.eventName,
       eventImage: event.image,
+      eventType: event.eventType,
+
       paymentProof: paymentScreenshot,
+
+      status: event.eventType === "Paid" ? "Pending" : "Approved",
+
       ...formData,
+
       registeredAt: new Date().toISOString(),
     };
 
@@ -88,34 +91,10 @@ const EventRegister = () => {
       JSON.stringify(registrations)
     );
 
-    // NOTIFICATION
-    let savedNoti =
-      JSON.parse(localStorage.getItem("notifications")) || [];
-
-    savedNoti.push({
-      id: Date.now(),
-      title: "Event Registration",
-      message: `🎟 You registered for "${event.eventName}"`,
-      details: `Event: ${event.eventName}
-Date: ${event.date}
-Venue: ${event.venue}`,
-      date: new Date().toISOString(),
-      read: false,
-      type: "personal",
-      user: loggedUser
-    });
-
-    localStorage.setItem(
-      "notifications",
-      JSON.stringify(savedNoti)
-    );
-
     alert("🎉 Registration Successful!");
 
     navigate("/student-dashboard");
   };
-
-
 
   return (
     <div className="register-container">
@@ -125,7 +104,6 @@ Venue: ${event.venue}`,
         <div className="register-left">
           <img src={event.image} alt={event.eventName} />
         </div>
-
 
         <div className="register-right">
 
@@ -182,11 +160,10 @@ Venue: ${event.venue}`,
               type="email"
               placeholder="Email *"
               required
+              value={formData.email}
               onChange={handleChange}
             />
 
-
-            {/* PAYMENT SCREENSHOT ONLY FOR PAID EVENTS */}
             {event.eventType === "Paid" && (
               <div className="payment-upload">
 
@@ -212,7 +189,6 @@ Venue: ${event.venue}`,
 
               </div>
             )}
-
 
             <button type="submit">
               Register

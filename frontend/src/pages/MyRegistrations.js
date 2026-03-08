@@ -52,8 +52,6 @@ const MyRegistrations = () => {
   return (
     <div className="myreg-page">
 
-     
-
       {registrations.length === 0 ? (
 
         <p className="no-reg">No registrations found.</p>
@@ -66,7 +64,6 @@ const MyRegistrations = () => {
 
             <div className="reg-card" key={index}>
 
-              {/* Event Image */}
               <img
                 src={event.eventImage}
                 alt={event.eventName}
@@ -77,13 +74,15 @@ const MyRegistrations = () => {
 
                 <h3>{event.eventName}</h3>
 
-                {/* STATUS BADGE */}
-                <p>
-                  <strong>Status:</strong>{" "}
-                  <span className={`status ${event.status?.toLowerCase() || "pending"}`}>
-                    {event.status || "Pending"}
-                  </span>
-                </p>
+                {/* STATUS ONLY FOR PAID EVENTS */}
+                {event.eventType === "Paid" && event.status && (
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span className={`status ${event.status.toLowerCase()}`}>
+                      {event.status}
+                    </span>
+                  </p>
+                )}
 
                 <p>
                   <strong>Full Name:</strong>{" "}
@@ -98,22 +97,9 @@ const MyRegistrations = () => {
                 <p>
                   <strong>Registered On:</strong>{" "}
                   {event.registeredAt
-                    ? new Date(event.registeredAt)
-                        .toLocaleDateString("en-IN")
+                    ? new Date(event.registeredAt).toLocaleDateString("en-IN")
                     : "N/A"}
                 </p>
-
-                {/* PAYMENT SCREENSHOT */}
-                {event.paymentProof && (
-                  <div className="payment-proof">
-                    <p><strong>Payment Screenshot:</strong></p>
-                    <img
-                      src={event.paymentProof}
-                      alt="Payment Proof"
-                      className="payment-img"
-                    />
-                  </div>
-                )}
 
                 <button
                   className="cancel-btn"

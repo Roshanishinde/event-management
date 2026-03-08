@@ -130,7 +130,7 @@ const AdminAllEvents = () => {
                 <td>
                   {event.eventType === "Paid"
                     ? `₹${event.amount}`
-                    : "Free"}
+                    : "-"}
                 </td>
 
                 <td className="action-buttons">
