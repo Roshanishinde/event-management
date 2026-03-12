@@ -5,5 +5,6 @@ router.post("/", controller.addEvent);
 router.get("/", controller.getEvents);
 router.put("/:id", controller.updateEvent);
 router.delete("/:id", controller.deleteEvent);
+router.get("/:id", controller.getEventById);
 
 module.exports = router;

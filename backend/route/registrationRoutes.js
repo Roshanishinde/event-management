@@ -1,7 +1,14 @@
-const router = require("express").Router();
-const controller = require("../controllers/registrationController");
+const express = require("express");
+const router = express.Router();
 
-router.post("/", controller.registerEvent);
-router.get("/:eventId", controller.getEventRegistrations);
+const {
+  registerEvent,
+  getEventRegistrations,
+  deleteRegistration
+} = require("../controllers/registrationController");
+
+router.post("/", registerEvent);
+router.get("/:eventId", getEventRegistrations);
+router.delete("/:id", deleteRegistration);
 
 module.exports = router;

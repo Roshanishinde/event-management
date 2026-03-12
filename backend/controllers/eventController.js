@@ -20,3 +20,20 @@ exports.deleteEvent = async (req, res) => {
   await Event.findByIdAndDelete(req.params.id);
   res.send("Event Deleted");
 };
+
+exports.getEventById = async (req, res) => {
+
+  try {
+
+    const event = await Event.findById(req.params.id);
+
+    res.json(event);
+
+  } catch (error) {
+
+    res.status(500).json({ message: "Error fetching event" });
+
+  }
+
+};
+
