@@ -1,68 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/adminAllEvents.css";
 import api from "../api/axios";
-import { useParams } from "react-router-dom";
 
 const AdminRegisteredEvents = () => {
-
   const navigate = useNavigate();
-  const { eventId } = useParams();
-
   const [events, setEvents] = useState([]);
   const [registrations, setRegistrations] = useState([]);
 
   useEffect(() => {
+    api.get("/api/events")
+      .then((res) => setEvents(res.data))
+      .catch((err) => console.log("Events error:", err));
 
-    // fetch events
-    api.get("/events")
-      .then(res => setEvents(res.data))
-      .catch(err => console.log(err));
-
-    // fetch registrations
-    api.get("/registrations")
-      .then(res => setRegistrations(res.data))
-      .catch(err => console.log(err));
-
+    api.get("/api/registrations")
+      .then((res) => setRegistrations(res.data))
+      .catch((err) => console.log("Registrations error:", err));
   }, []);
 
-  // count students per event
-  const getCount = (eventId) => {
-    return registrations.filter((r) => r.eventId === eventId).length;
-  };
+  const getCount = (eventId) =>
+    registrations.filter((r) => String(r.eventId) === String(eventId)).length;
 
   return (
     <div className="admin-events-page">
+      <h2 style={{ marginBottom: "20px" }}>Registered Events</h2>
 
-      {events.length === 0 && <p>No events available</p>}
+      {events.length === 0 ? (
+        <p>No events available</p>
+      ) : (
+        <div className="events-grid">
+          {events.map((event) => (
+            <div
+              key={event._id}
+              className="event-card"
+           onClick={() => navigate(`/admin/event-students/${event._id}`)}
+            >
+              <div className="event-image">
+                <img src={event.image} alt={event.eventName} />
+              </div>
 
-      <div className="events-grid">
-
-        {events.map((event, index) => (
-
-          <div
-            key={index}
-            className="event-card"
-            onClick={() =>
-              navigate(`/admin/registered-students/${event._id}`)
-            }
-          >
-
-            <div className="event-image">
-              <img src={event.image} alt={event.eventName} />
+              <div className="event-overlay">
+                <h3>{event.eventName}</h3>
+                <p>Students: {getCount(event._id)}</p>
+              </div>
             </div>
-
-            <div className="event-overlay">
-              <h3>{event.eventName}</h3>
-              <p>Students: {getCount(event._id)}</p>
-            </div>
-
-          </div>
-
-        ))}
-
-      </div>
-
+          ))}
+        </div>
+      )}
     </div>
   );
 };

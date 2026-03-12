@@ -5,14 +5,14 @@ import StudentProfile from "./StudentProfile";
 import Notifications from "./Notifications"; // Import notifications
 
 const StudentDashboard = () => {
-  const username = localStorage.getItem("studentUsername") || "Student";
+ const username = localStorage.getItem("studentUsername");
 
   const [activeSection, setActiveSection] = useState("profile");
   const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    updateUnreadCount();
-  }, []);
+ useEffect(() => {
+  updateUnreadCount();
+}, [activeSection]);
 
   const updateUnreadCount = () => {
     const savedNoti = JSON.parse(localStorage.getItem("notifications")) || [];

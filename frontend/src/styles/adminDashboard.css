@@ -46,3 +46,25 @@
 .logout-card {
   background: #ffe5e5;
 }
+
+.dashboard-stats{
+display:flex;
+gap:20px;
+justify-content:center;
+margin-bottom:30px;
+}
+
+.stat-card{
+background:white;
+padding:20px;
+border-radius:10px;
+width:180px;
+text-align:center;
+box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+
+.stat-card h3{
+font-size:28px;
+color:darkred;
+margin-bottom:5px;
+}

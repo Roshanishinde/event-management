@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 import "../styles/adminAllEvents.css";
 
 const AdminAllEvents = () => {
@@ -11,21 +12,33 @@ const AdminAllEvents = () => {
 
   useEffect(() => {
 
-    // ADMIN PROTECTION
     if (role !== "admin") {
       navigate("/");
       return;
     }
 
-    const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
-    setEvents(storedEvents);
+    loadEvents();
 
   }, [navigate, role]);
 
 
 
+  const loadEvents = () => {
+
+    api.get("/api/events")
+      .then(res => {
+        setEvents(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+  };
+
+
+
   // DELETE EVENT
-  const handleDelete = (index) => {
+  const handleDelete = async (id) => {
 
     const confirmDelete = window.confirm(
       "⚠️ Are you sure you want to delete this event?"
@@ -33,11 +46,21 @@ const AdminAllEvents = () => {
 
     if (!confirmDelete) return;
 
-    const updatedEvents = events.filter((_, i) => i !== index);
+    try {
 
-    setEvents(updatedEvents);
+      await api.delete(`/api/events/${id}`);
 
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
+      alert("✅ Event Deleted");
+
+      loadEvents();
+
+    } catch (error) {
+
+      console.log(error);
+      alert("Error deleting event");
+
+    }
+
   };
 
 
@@ -55,7 +78,7 @@ const AdminAllEvents = () => {
   };
 
 
-  // FORMAT TIME (AM / PM)
+  // FORMAT TIME
   const formatTime = (time) => {
 
     if (!time) return "-";
@@ -71,14 +94,12 @@ const AdminAllEvents = () => {
       minute: "2-digit",
       hour12: true,
     });
-  };
 
+  };
 
 
   return (
     <div className="admin-events-page">
-
-    
 
       {events.length === 0 ? (
 
@@ -101,12 +122,11 @@ const AdminAllEvents = () => {
             </tr>
           </thead>
 
-
           <tbody>
 
-            {events.map((event, index) => (
+            {events.map((event) => (
 
-              <tr key={index}>
+              <tr key={event._id}>
 
                 <td>
                   <img
@@ -120,7 +140,6 @@ const AdminAllEvents = () => {
 
                 <td>{formatDate(event.date)}</td>
 
-                {/* TIME WITH AM / PM */}
                 <td>{formatTime(event.time)}</td>
 
                 <td>{event.venue}</td>
@@ -137,14 +156,14 @@ const AdminAllEvents = () => {
 
                   <button
                     className="edit-btn"
-                    onClick={() => navigate(`/admin/edit-event/${index}`)}
+                    onClick={() => navigate(`/admin/edit-event/${event._id}`)}
                   >
                     Edit
                   </button>
 
                   <button
                     className="delete-btn"
-                    onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(event._id)}
                   >
                     Delete
                   </button>

@@ -1,70 +1,91 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import api from "../api/axios";
 import "../styles/adminEventStudents.css";
 
 const AdminEventStudents = () => {
-  const { id } = useParams(); // event id from URL
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Load students and event info
   useEffect(() => {
     const role = localStorage.getItem("role");
+
     if (role !== "admin") {
       navigate("/");
       return;
     }
 
-    const allRegs = JSON.parse(localStorage.getItem("registrations")) || [];
-    const events = JSON.parse(localStorage.getItem("events")) || [];
-
-    const eventInfo = events[Number(id)]; // get current event
-    setCurrentEvent(eventInfo);
-
-    const filtered = allRegs.filter(r => r.eventId === Number(id));
-    setStudents(filtered);
-
+    loadEventAndStudents();
   }, [id, navigate]);
 
-  // Approve student (Paid event)
-  const handleApprove = (email) => {
-    let allRegs = JSON.parse(localStorage.getItem("registrations")) || [];
-    const updated = allRegs.map(r => {
-      if (r.email === email && r.eventId === Number(id)) {
-        return { ...r, status: "approved" };
-      }
-      return r;
-    });
-    localStorage.setItem("registrations", JSON.stringify(updated));
-    setStudents(updated.filter(r => r.eventId === Number(id)));
+  const loadEventAndStudents = async () => {
+    try {
+      setLoading(true);
+
+      const [eventRes, studentRes] = await Promise.all([
+        api.get(`/api/events/${id}`),
+        api.get(`/api/registrations/event/${id}`),
+      ]);
+
+      setCurrentEvent(eventRes.data);
+      setStudents(studentRes.data);
+    } catch (error) {
+      console.log("Error loading event students:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Reject student (Paid event)
-  const handleReject = (email) => {
-    let allRegs = JSON.parse(localStorage.getItem("registrations")) || [];
-    const updated = allRegs.map(r => {
-      if (r.email === email && r.eventId === Number(id)) {
-        return { ...r, status: "rejected" };
-      }
-      return r;
-    });
-    localStorage.setItem("registrations", JSON.stringify(updated));
-    setStudents(updated.filter(r => r.eventId === Number(id)));
+  const handleApprove = async (regId) => {
+    try {
+      await api.put(`/api/registrations/${regId}`, {
+        status: "approved",
+      });
+
+      loadEventAndStudents();
+    } catch (error) {
+      console.log("Approve error:", error);
+    }
   };
 
-  // Delete student (Free or Paid)
-  const handleDelete = (email) => {
-    if (!window.confirm("Are you sure you want to delete this student?")) return;
+  const handleReject = async (regId) => {
+    try {
+      await api.put(`/api/registrations/${regId}`, {
+        status: "rejected",
+      });
 
-    let allRegs = JSON.parse(localStorage.getItem("registrations")) || [];
-    const updated = allRegs.filter(r => !(r.email === email && r.eventId === Number(id)));
-    localStorage.setItem("registrations", JSON.stringify(updated));
-    setStudents(updated.filter(r => r.eventId === Number(id)));
+      loadEventAndStudents();
+    } catch (error) {
+      console.log("Reject error:", error);
+    }
   };
 
-  if (!currentEvent) return <h2 style={{ padding: "40px" }}>Event Not Found</h2>;
+  const handleDelete = async (regId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this student registration?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/registrations/${regId}`);
+      loadEventAndStudents();
+    } catch (error) {
+      console.log("Delete error:", error);
+    }
+  };
+
+  if (loading) {
+    return <h2 style={{ padding: "40px" }}>Loading...</h2>;
+  }
+
+  if (!currentEvent) {
+    return <h2 style={{ padding: "40px" }}>Event Not Found</h2>;
+  }
 
   return (
     <div className="event-students-page">
@@ -83,7 +104,6 @@ const AdminEventStudents = () => {
               <th>Contact</th>
               <th>Email</th>
 
-              {/* Paid event columns */}
               {currentEvent.eventType === "Paid" && (
                 <>
                   <th>Screenshot</th>
@@ -98,9 +118,11 @@ const AdminEventStudents = () => {
 
           <tbody>
             {students.map((s, index) => (
-              <tr key={index}>
+              <tr key={s._id}>
                 <td>{index + 1}</td>
-                <td>{s.firstName} {s.middleName} {s.lastName}</td>
+                <td>
+                  {s.firstName} {s.middleName} {s.lastName}
+                </td>
                 <td>{s.className}</td>
                 <td>{s.division}</td>
                 <td>{s.contact}</td>
@@ -110,29 +132,58 @@ const AdminEventStudents = () => {
                   <>
                     <td>
                       {s.paymentProof ? (
-                        <a href={s.paymentProof} target="_blank" rel="noreferrer">View</a>
-                      ) : "No Screenshot"}
+                        <a href={s.paymentProof} target="_blank" rel="noreferrer">
+                          View
+                        </a>
+                      ) : (
+                        "No Screenshot"
+                      )}
                     </td>
+
                     <td>{s.status || "Pending"}</td>
+
                     <td>
                       {s.status !== "approved" && (
-                        <button className="approve-btn" onClick={() => handleApprove(s.email)}>Approve</button>
+                        <button
+                          className="approve-btn"
+                          onClick={() => handleApprove(s._id)}
+                        >
+                          Approve
+                        </button>
                       )}
+
                       {s.status !== "rejected" && (
-                        <button className="reject-btn" onClick={() => handleReject(s.email)}>Reject</button>
+                        <button
+                          className="reject-btn"
+                          onClick={() => handleReject(s._id)}
+                        >
+                          Reject
+                        </button>
                       )}
                     </td>
                   </>
                 )}
 
                 <td>
-                  <button className="delete-btn" onClick={() => handleDelete(s.email)}>Delete</button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(s._id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+
+      <button
+        style={{ marginTop: "20px" }}
+        onClick={() => navigate("/admin/registered-events")}
+      >
+        Back
+      </button>
     </div>
   );
 };

@@ -1,59 +1,122 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "../styles/studentProfile.css"; 
+import api from "../api/axios";
+import "../styles/studentProfile.css";
 
 const StudentProfile = () => {
-  const storedUsername = localStorage.getItem("studentUsername") || "";
-  const storedEmail = localStorage.getItem("studentEmail") || "";
-  const storedPass = localStorage.getItem("studentPassword") || "";
-  const storedRoleType = localStorage.getItem("studentRoleType") || "";
 
-  const storedPic = localStorage.getItem("studentProfilePic") || "";
+  const username = localStorage.getItem("studentUsername");
 
+  const [profile, setProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [username, setUsername] = useState(storedUsername);
-  const [email, setEmail] = useState(storedEmail);
-  const [password, setPassword] = useState(storedPass);
-  const [role, setRole] = useState(storedRoleType);
-  const [profilePic, setProfilePic] = useState(storedPic);
   const [showPass, setShowPass] = useState(false);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result);
-      };
-      reader.readAsDataURL(file);
+  useEffect(() => {
+
+    loadProfile();
+
+  }, []);
+
+  const loadProfile = async () => {
+
+    try {
+
+      const res = await api.get(`/api/students/${username}`);
+
+      setProfile(res.data);
+
+    } catch (error) {
+
+      console.log(error);
+
     }
+
   };
 
-  const saveProfile = () => {
-    localStorage.setItem("studentUsername", username);
-    localStorage.setItem("studentEmail", email);
-    localStorage.setItem("studentPassword", password);
-    localStorage.setItem("studentRoleType", role);
-    localStorage.setItem("studentProfilePic", profilePic);
+  const handleChange = (e) => {
 
-    alert("✅ Profile Updated Successfully!");
-    setIsEditing(false);
+    setProfile({
+
+      ...profile,
+
+      [e.target.name]: e.target.value
+
+    });
+
   };
+
+  const handleImageChange = (e) => {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+
+      setProfile({
+
+        ...profile,
+
+        profilePic: reader.result
+
+      });
+
+    };
+
+    reader.readAsDataURL(file);
+
+  };
+
+  const saveProfile = async () => {
+
+    try {
+
+      await api.put(`/api/students/${username}`, profile);
+
+      alert("✅ Profile Updated Successfully");
+
+      setIsEditing(false);
+
+      loadProfile();
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Update failed");
+
+    }
+
+  };
+
+  if (!profile) return <h2>Loading...</h2>;
 
   return (
+
     <div className="profile-section">
 
-      {/* SHOW PROFILE */}
       {!isEditing && (
+
         <>
+
           <div className="profile-pic-container">
-            {profilePic ? (
-              <img src={profilePic} className="profile-pic" alt="profile" />
+
+            {profile.profilePic ? (
+
+              <img src={profile.profilePic} className="profile-pic" alt="profile" />
+
             ) : (
+
               <div className="default-avatar">
-                {username.charAt(0).toUpperCase()}
+
+                {profile.username?.charAt(0).toUpperCase()}
+
               </div>
+
             )}
+
           </div>
 
           <h2>My Profile</h2>
@@ -61,97 +124,139 @@ const StudentProfile = () => {
           <div className="profile-card">
 
             <div className="profile-row">
+
               <span className="label">Username:</span>
-              <span className="value">{username}</span>
+
+              <span className="value">{profile.username}</span>
+
             </div>
 
             <div className="profile-row">
+
               <span className="label">Email:</span>
-              <span className="value">{email}</span>
+
+              <span className="value">{profile.email}</span>
+
             </div>
 
             <div className="profile-row password-row">
+
               <span className="label">Password:</span>
+
               <span className="value">
-                {showPass ? password : "••••••••"}
-                <span className="profile-eye" onClick={() => setShowPass(!showPass)}>
+
+                {showPass ? profile.password : "••••••••"}
+
+                <span
+
+                  className="profile-eye"
+
+                  onClick={() => setShowPass(!showPass)}
+
+                >
+
                   {showPass ? <FaEyeSlash /> : <FaEye />}
+
                 </span>
+
               </span>
+
             </div>
 
             <div className="profile-row">
+
               <span className="label">User Type:</span>
-              <span className="value">{role}</span>
+
+              <span className="value">{profile.roleType}</span>
+
             </div>
 
           </div>
 
           <button
+
             className="edit-profile-btn"
+
             onClick={() => setIsEditing(true)}
+
           >
+
             Edit Profile
+
           </button>
+
         </>
+
       )}
 
-      {/* EDIT PROFILE FORM */}
       {isEditing && (
-        <>
-          <h2>Edit Profile</h2>
-          <div className="edit-profile-form">
 
-            <input type="file" onChange={handleImageChange} />
+        <div className="edit-profile-form">
 
-            <input
-              type="text"
-              placeholder="New Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+          <input type="file" onChange={handleImageChange} />
 
-            <input
-              type="email"
-              placeholder="New Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <input
 
-           {/* PASSWORD WITH EYE ICON */}
-            <div className="password-input-wrapper">
-              <input
-                type={showPass ? "text" : "password"}
-                placeholder="New Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+            name="username"
 
-              <span
-                className="profile-eye-small"
-                onClick={() => setShowPass(!showPass)}
-              >
-                {showPass ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
+            value={profile.username}
 
+            onChange={handleChange}
 
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="FY">FY</option>
-              <option value="SY">SY</option>
-              <option value="TY">TY</option>
-            </select>
+          />
 
-            <button onClick={saveProfile}>Save Changes</button>
-          </div>
-        </>
+          <input
+
+            name="email"
+
+            value={profile.email}
+
+            onChange={handleChange}
+
+          />
+
+          <input
+
+            name="password"
+
+            value={profile.password}
+
+            onChange={handleChange}
+
+          />
+
+          <select
+
+            name="roleType"
+
+            value={profile.roleType}
+
+            onChange={handleChange}
+
+          >
+
+            <option value="FY">FY</option>
+
+            <option value="SY">SY</option>
+
+            <option value="TY">TY</option>
+
+          </select>
+
+          <button onClick={saveProfile}>
+
+            Save Changes
+
+          </button>
+
+        </div>
+
       )}
 
     </div>
+
   );
+
 };
 
 export default StudentProfile;

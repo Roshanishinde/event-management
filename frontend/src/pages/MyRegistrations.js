@@ -1,45 +1,56 @@
 import React, { useEffect, useState } from "react";
 import "../styles/MyRegistrations.css";
+import api from "../api/axios";
 
 const MyRegistrations = () => {
 
   const [registrations, setRegistrations] = useState([]);
 
+  const loggedUser = localStorage.getItem("studentUsername");
+
   useEffect(() => {
 
-    const loggedUser = localStorage.getItem("studentUsername");
+    const url = `/api/students/user/${loggedUser}`;
+console.log("Fetching:", url);
 
-    const allRegs =
-      JSON.parse(localStorage.getItem("registrations")) || [];
-
-    const myRegs = allRegs.filter((r) => r.user === loggedUser);
-
-    setRegistrations(myRegs);
-
-  }, []);
+api.get(url)
+  .then(res => setRegistrations(res.data))
+  .catch(err => console.log(err));
 
 
+    if (!loggedUser) return;
 
-  const handleCancel = (email, eventId) => {
+    api.get(`/api/registrations/user/${loggedUser}`)
+  .then(res => {
+    console.log("User registrations:", res.data);
+    setRegistrations(res.data);
+  })
+  .catch(err => console.log(err));
+
+
+  }, [loggedUser]);
+
+
+
+  const handleCancel = async (id) => {
 
     if (!window.confirm("Cancel this registration?")) return;
 
-    let allRegs =
-      JSON.parse(localStorage.getItem("registrations")) || [];
+    try {
 
-    const updated = allRegs.filter(
-      (r) => !(r.email === email && r.eventId === eventId)
-    );
+      await api.delete(`/api/registrations/${id}`);
 
-    localStorage.setItem("registrations", JSON.stringify(updated));
+      setRegistrations(prev =>
+        prev.filter(reg => reg._id !== id)
+      );
 
-    setRegistrations((prev) =>
-      prev.filter(
-        (r) => !(r.email === email && r.eventId === eventId)
-      )
-    );
+      alert("Registration Cancelled");
 
-    alert("Registration Cancelled");
+    } catch (err) {
+
+      console.log(err);
+
+    }
 
   };
 
@@ -56,12 +67,10 @@ const MyRegistrations = () => {
 
         <div className="reg-grid">
 
-          {registrations.map((event, index) => (
+          {registrations.map((event) => (
 
-            <div className="reg-card" key={index}>
+            <div className="reg-card" key={event._id}>
 
-              
-              {/* Event Image */}
               <img
                 src={event.eventImage}
                 alt={event.eventName}
@@ -72,15 +81,12 @@ const MyRegistrations = () => {
 
                 <h3>{event.eventName}</h3>
 
-                {/* STATUS ONLY FOR PAID EVENTS */}
-                {event.eventType === "Paid" && event.status && (
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    <span className={`status ${event.status.toLowerCase()}`}>
-                      {event.status}
-                    </span>
-                  </p>
-                )}
+                <p>
+                  <strong>Status:</strong>{" "}
+                  <span className={`status ${event.status?.toLowerCase()}`}>
+                    {event.status || "Pending"}
+                  </span>
+                </p>
 
                 <p>
                   <strong>Full Name:</strong>{" "}
@@ -99,11 +105,20 @@ const MyRegistrations = () => {
                     : "N/A"}
                 </p>
 
+                {event.paymentProof && (
+                  <div className="payment-proof">
+                    <p><strong>Payment Screenshot:</strong></p>
+                    <img
+                      src={event.paymentProof}
+                      alt="Payment Proof"
+                      className="payment-img"
+                    />
+                  </div>
+                )}
+
                 <button
                   className="cancel-btn"
-                  onClick={() =>
-                    handleCancel(event.email, event.eventId)
-                  }
+                  onClick={() => handleCancel(event._id)}
                 >
                   Cancel Registration
                 </button>

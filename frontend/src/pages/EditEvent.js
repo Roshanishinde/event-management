@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/addEvent.css";
+import api from "../api/axios";
 
 const EditEvent = () => {
 
-  const { index } = useParams();
+  const { id } = useParams(); // MongoDB event id
   const navigate = useNavigate();
-
-  const eventIndex = Number(index);
-
-  const [events, setEvents] = useState([]);
 
   const [eventName, setEventName] = useState("");
   const [eventType, setEventType] = useState("");
@@ -19,7 +16,9 @@ const EditEvent = () => {
   const [venue, setVenue] = useState("");
   const [image, setImage] = useState("");
 
-  // LOAD EVENT
+  const [loading, setLoading] = useState(true);
+
+  // LOAD EVENT FROM BACKEND
   useEffect(() => {
 
     const role = localStorage.getItem("role");
@@ -29,75 +28,63 @@ const EditEvent = () => {
       return;
     }
 
-    const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
+    api.get(`/api/events/${id}`)
+      .then(res => {
 
-    if (!storedEvents[eventIndex]) {
-      navigate("/admin/all-events");
-      return;
-    }
+        const event = res.data;
 
-    setEvents(storedEvents);
+        setEventName(event.eventName || "");
+        setEventType(event.eventType || "");
+        setAmount(event.amount || "");
+        setDate(event.date || "");
+        setTime(event.time || "");
+        setVenue(event.venue || "");
+        setImage(event.image || "");
 
-    const event = storedEvents[eventIndex];
+        setLoading(false);
 
-    setEventName(event.eventName || "");
-    setEventType(event.eventType || "");
-    setAmount(event.amount || "");
-    setDate(event.date || "");
-    setTime(event.time || "");
-    setVenue(event.venue || "");
-    setImage(event.image || "");
+      })
+      .catch(err => {
+        console.log(err);
+        alert("Event not found");
+        navigate("/admin/all-events");
+      });
 
-  }, [eventIndex, navigate]);
+  }, [id, navigate]);
 
 
 
   // UPDATE EVENT
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    if (!eventName || !eventType || !date || !time || !venue) {
-      alert("All fields are required");
-      return;
-    }
-
-    const updatedEvents = [...events];
-
-    updatedEvents[eventIndex] = {
+    const updatedEvent = {
       eventName,
       eventType,
       amount: eventType === "Paid" ? amount : "",
       date,
       time,
       venue,
-      image,
+      image
     };
 
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
+    try {
 
+      await api.put(`/api/events/${id}`, updatedEvent);
 
-    // NOTIFICATION
-    let notifications =
-      JSON.parse(localStorage.getItem("notifications")) || [];
+      alert("✅ Event Updated Successfully!");
 
-    notifications.push({
-      id: Date.now(),
-      title: "Event Updated",
-      message: `✏️ Event updated: "${eventName}"`,
-      type: "global",
-      user: "",
-      read: false,
-      date: new Date().toISOString(),
-    });
+      navigate("/admin/all-events");
 
-    localStorage.setItem("notifications", JSON.stringify(notifications));
+    } catch (error) {
 
-    alert("✅ Event Updated Successfully!");
+      console.log(error);
+      alert("❌ Error updating event");
 
-    navigate("/admin/all-events");
+    }
+
   };
-
 
 
   // IMAGE CHANGE
@@ -114,8 +101,13 @@ const EditEvent = () => {
     };
 
     reader.readAsDataURL(file);
+
   };
 
+
+  if (loading) {
+    return <h2 style={{textAlign:"center"}}>Loading Event...</h2>;
+  }
 
 
   return (
@@ -126,7 +118,6 @@ const EditEvent = () => {
 
       <form className="add-event-form" onSubmit={handleSubmit}>
 
-        {/* EVENT NAME */}
         <input
           type="text"
           placeholder="Event Name"
@@ -135,8 +126,6 @@ const EditEvent = () => {
           required
         />
 
-
-        {/* EVENT TYPE */}
         <select
           value={eventType}
           onChange={(e) => setEventType(e.target.value)}
@@ -147,8 +136,6 @@ const EditEvent = () => {
           <option value="Paid">Paid</option>
         </select>
 
-
-        {/* AMOUNT (ONLY FOR PAID) */}
         {eventType === "Paid" && (
           <input
             type="number"
@@ -159,8 +146,6 @@ const EditEvent = () => {
           />
         )}
 
-
-        {/* DATE */}
         <input
           type="date"
           value={date}
@@ -168,8 +153,6 @@ const EditEvent = () => {
           required
         />
 
-
-        {/* TIME */}
         <input
           type="time"
           value={time}
@@ -177,8 +160,6 @@ const EditEvent = () => {
           required
         />
 
-
-        {/* VENUE */}
         <input
           type="text"
           placeholder="Venue"
@@ -187,17 +168,12 @@ const EditEvent = () => {
           required
         />
 
-
-        {/* IMAGE */}
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
         />
 
-
-
-        {/* IMAGE PREVIEW */}
         {image && (
           <img
             src={image}
@@ -205,11 +181,10 @@ const EditEvent = () => {
             style={{
               width: "120px",
               marginTop: "10px",
-              borderRadius: "8px",
+              borderRadius: "8px"
             }}
           />
         )}
-
 
         <button type="submit">Update Event</button>
 

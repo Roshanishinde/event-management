@@ -1,11 +1,17 @@
-import React from 'react';
-import '../styles/dashboard.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/dashboard.css";
 
-const EventCard = ({ event, isRegistered, onRegister }) => {
+const EventCard = ({ event }) => {
+
+  const navigate = useNavigate();
+
   return (
-    <div className="event-card">
+    <div
+      className="event-card"
+      onClick={() => navigate(`/event/${event._id}`)}
+    >
 
-      {/* Event Image */}
       <img 
         src={event.image} 
         alt={event.eventName} 
@@ -14,47 +20,29 @@ const EventCard = ({ event, isRegistered, onRegister }) => {
 
       <div className="event-content">
 
-        {/* Event Title */}
         <h3 className="event-title">{event.eventName}</h3>
 
-        {/* Event Type */}
         <p className="event-type">
           Type: {event.eventType}
         </p>
 
-        {/* Amount if Paid */}
         {event.eventType === "Paid" && (
           <p className="event-amount">
             Amount: ₹{event.amount}
           </p>
         )}
 
-        {/* Date */}
         <div className="detail-item">
-          <span className="icon">📅</span>
-          <span>{event.date}</span>
+          📅 {event.date}
         </div>
 
-        {/* Time */}
         <div className="detail-item">
-          <span className="icon">🕒</span>
-          <span>{event.time}</span>
+          🕒 {event.time}
         </div>
 
-        {/* Venue */}
         <div className="detail-item">
-          <span className="icon">📍</span>
-          <span>{event.venue}</span>
+          📍 {event.venue}
         </div>
-
-        {/* Register Button */}
-        <button
-          className="register-btn"
-          onClick={() => onRegister(event)}
-          disabled={isRegistered}
-        >
-          {isRegistered ? 'Registered' : 'Register Now'}
-        </button>
 
       </div>
 

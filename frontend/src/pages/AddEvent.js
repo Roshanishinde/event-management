@@ -43,7 +43,7 @@ const AddEvent = () => {
     };
 
     try {
-      await api.post("/events", newEvent);
+      await api.post("/api/events", newEvent);
 
       let notifications =
         JSON.parse(localStorage.getItem("notifications")) || [];
