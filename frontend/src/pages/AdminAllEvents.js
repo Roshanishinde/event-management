@@ -154,12 +154,10 @@ const AdminAllEvents = () => {
 
                 <td className="action-buttons">
 
-                  <button
-                    className="edit-btn"
-                    onClick={() => navigate(`/admin/edit-event/${event._id}`)}
-                  >
-                    Edit
-                  </button>
+                 <button onClick={() => navigate(`/admin/edit-event/${event._id}`)}>
+  Edit
+</button>
+
 
                   <button
                     className="delete-btn"

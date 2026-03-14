@@ -4,8 +4,7 @@ import "../styles/addEvent.css";
 import api from "../api/axios";
 
 const EditEvent = () => {
-
-  const { id } = useParams(); // MongoDB event id
+  const { id } = useParams(); // MongoDB _id
   const navigate = useNavigate();
 
   const [eventName, setEventName] = useState("");
@@ -15,12 +14,9 @@ const EditEvent = () => {
   const [time, setTime] = useState("");
   const [venue, setVenue] = useState("");
   const [image, setImage] = useState("");
-
   const [loading, setLoading] = useState(true);
 
-  // LOAD EVENT FROM BACKEND
   useEffect(() => {
-
     const role = localStorage.getItem("role");
 
     if (role !== "admin") {
@@ -28,35 +24,33 @@ const EditEvent = () => {
       return;
     }
 
-    api.get(`/api/events/${id}`)
-      .then(res => {
-
+    const fetchEvent = async () => {
+      try {
+        const res = await api.get(`/api/events/${id}`);
         const event = res.data;
 
         setEventName(event.eventName || "");
         setEventType(event.eventType || "");
         setAmount(event.amount || "");
-        setDate(event.date || "");
+        setDate(event.date ? event.date.substring(0, 10) : "");
         setTime(event.time || "");
         setVenue(event.venue || "");
         setImage(event.image || "");
-
-        setLoading(false);
-
-      })
-      .catch(err => {
-        console.log(err);
+      } catch (err) {
+        console.log("Error fetching event:", err);
         alert("Event not found");
         navigate("/admin/all-events");
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    if (id) {
+      fetchEvent();
+    }
   }, [id, navigate]);
 
-
-
-  // UPDATE EVENT
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     const updatedEvent = {
@@ -66,58 +60,39 @@ const EditEvent = () => {
       date,
       time,
       venue,
-      image
+      image,
     };
 
     try {
-
       await api.put(`/api/events/${id}`, updatedEvent);
-
-      alert("✅ Event Updated Successfully!");
-
+      alert("Event updated successfully");
       navigate("/admin/all-events");
-
     } catch (error) {
-
-      console.log(error);
-      alert("❌ Error updating event");
-
+      console.log("Update error:", error);
+      alert("Error updating event");
     }
-
   };
 
-
-  // IMAGE CHANGE
   const handleImageChange = (e) => {
-
     const file = e.target.files[0];
-
     if (!file) return;
 
     const reader = new FileReader();
-
     reader.onloadend = () => {
       setImage(reader.result);
     };
-
     reader.readAsDataURL(file);
-
   };
 
-
   if (loading) {
-    return <h2 style={{textAlign:"center"}}>Loading Event...</h2>;
+    return <h2 style={{ textAlign: "center" }}>Loading Event...</h2>;
   }
 
-
   return (
-
     <div className="add-event-page">
-
       <h2>Edit Event</h2>
 
       <form className="add-event-form" onSubmit={handleSubmit}>
-
         <input
           type="text"
           placeholder="Event Name"
@@ -181,15 +156,13 @@ const EditEvent = () => {
             style={{
               width: "120px",
               marginTop: "10px",
-              borderRadius: "8px"
+              borderRadius: "8px",
             }}
           />
         )}
 
         <button type="submit">Update Event</button>
-
       </form>
-
     </div>
   );
 };

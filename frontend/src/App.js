@@ -215,7 +215,7 @@ function App() {
           element={isLoggedIn && role === "admin" ? <AdminAllEvents /> : <Navigate to="/login" />}
         />
         <Route
-          path="/admin/edit-event/:index"
+          path="/admin/edit-event/:id"
           element={isLoggedIn && role === "admin" ? <EditEvent /> : <Navigate to="/login" />}
         />
         <Route path="/admin/contact-messages" element={<ContactMessages />} />

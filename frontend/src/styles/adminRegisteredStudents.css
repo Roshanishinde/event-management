@@ -25,59 +25,66 @@ body {
 /* Heading */
 .admin-container h2 {
   margin-bottom: 25px;
-  font-size: 24px;
-  color: #333;
+  font-size: 26px;
+  font-weight: bold;
+  color: #8b0000;
 }
 
 /* Table */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 /* Header */
 .admin-table thead {
-  background-color: #9b0a0a;
+  background: linear-gradient(90deg, #8b0000, #5a0000);
   color: white;
 }
 
 .admin-table th {
-  padding: 14px;
-  font-weight: 500;
+  padding: 16px;
+  font-weight: 600;
   text-align: center;
+  font-size: 15px;
 }
 
 /* Table cells */
 .admin-table td {
-  padding: 12px;
+  padding: 14px;
   text-align: center;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 /* Zebra rows */
 .admin-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #fdeaea;
 }
 
 /* Hover effect */
 .admin-table tbody tr:hover {
-  background-color: #f1f5fb;
+  background-color: #ffe5e5;
+  transform: scale(1.01);
+  transition: 0.2s ease;
 }
 
 /* Delete button */
 .delete-btn {
-  background-color: #e53935;
+  background-color: #8b0000;
   color: white;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 7px 15px;
+  border-radius: 7px;
   cursor: pointer;
   font-size: 14px;
   transition: 0.2s ease;
 }
 
 .delete-btn:hover {
-  background-color: #c62828;
+  background-color: #5a0000;
 }
 
 /* Screenshot button */
@@ -85,11 +92,10 @@ body {
   background-color: #1976d2;
   color: white;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 7px 15px;
+  border-radius: 7px;
   cursor: pointer;
   font-size: 14px;
-  transition: 0.2s ease;
 }
 
 .screenshot-btn:hover {
@@ -125,8 +131,8 @@ body {
   background-color: #2e7d32;
   color: white;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 7px 15px;
+  border-radius: 7px;
   cursor: pointer;
   margin-right: 5px;
 }
@@ -140,8 +146,8 @@ body {
   background-color: #f57c00;
   color: white;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 7px 15px;
+  border-radius: 7px;
   cursor: pointer;
 }
 
@@ -149,10 +155,7 @@ body {
   background-color: #e65100;
 }
 
-/* ============================= */
-/* ACTIVE BUTTON STATE */
-/* ============================= */
-
+/* Active button state */
 .approve-btn.active {
   background-color: #1b5e20;
   box-shadow: 0 0 0 2px rgba(46,125,50,0.3);
@@ -168,6 +171,7 @@ body {
   display:flex;
   justify-content:center;
   gap:6px;
+  flex-wrap:wrap;
 }
 
 /* MODAL OVERLAY */
@@ -189,11 +193,9 @@ body {
 .modal-content {
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
-
-  width: 1000px;          /* card width */
+  border-radius: 12px;
+  width: 1000px;
   max-width: 90%;
-
   text-align: center;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
@@ -201,7 +203,56 @@ body {
 /* RECEIPT IMAGE */
 .modal-content img {
   width: 100%;
-  max-height: 600px;     /* image height limit */
+  max-height: 600px;
   object-fit: contain;
   border-radius: 8px;
+}
+
+
+/* ========================= */
+/* MOBILE RESPONSIVE TABLE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  .admin-container {
+    padding: 15px;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-table tr {
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    padding: 10px;
+    background: white;
+  }
+
+  .admin-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .admin-table td::before {
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    font-weight: bold;
+    color: #8b0000;
+  }
+
 }
